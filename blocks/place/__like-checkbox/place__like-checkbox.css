@@ -1,0 +1,7 @@
+.place__like-checkbox {
+    display: none;
+}
+
+.place__like-checkbox:checked + .place__like-lable{
+    background-image: url("/images/like-button-active.png");
+}

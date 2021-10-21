@@ -1,0 +1,9 @@
+.profile__info {
+    width: 337px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 25px;
+    row-gap: 16px;
+}

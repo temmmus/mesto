@@ -1,0 +1,7 @@
+.place__wrapper {
+    margin-top: 25px;
+    margin-bottom: 31px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}

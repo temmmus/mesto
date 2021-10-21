@@ -6,31 +6,21 @@ let profileOccupation = document.querySelector(".profile__occupation");
 let popupProfileName = document.querySelector(".popup__input_name");
 let popupProfileOccupation= document.querySelector(".popup__input_occupation");
 let popup = document.querySelector(".popup");
-let likeCheckbox = document.querySelector(".place__like-checkbox");
-let likeLable = document.querySelector(".place__like-lable");
 
-
-
-// открытие попапа
 editButton.addEventListener('click', function () {
-    popup.classList.add('popup_opened');
+    popup.classList.add('popup_condition_opened');
   }); 
 
-// закрытие попапа
 closeButton.addEventListener('click', function () {
-    popup.classList.toggle('popup_opened');
+    popup.classList.toggle('popup_condition_opened');
   });   
 
 
 saveButton.addEventListener('click', function () {
+    
     profileName.textContent = popupProfileName.textContent;
-    popup.classList.toggle('popup_opened');
+    popup.classList.toggle('popup_condition_opened');
+    console.log(popupProfileName.textContent);
+    console.log(profileName);
     return profileName.textContent;
   });     
-
-
-
-// проставление лайка
-// likeCheckbox.addEventListener('change', function () {
-//     likeLable.classList.toggle('place__like-lable_checked');
-//   });   

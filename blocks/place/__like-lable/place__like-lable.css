@@ -1,0 +1,9 @@
+.place__like-lable {
+    width: 22px;
+    height: 19px;
+    background-image: url("/images/like-button.png");
+}
+.place__like-lable:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}
