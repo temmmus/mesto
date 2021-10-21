@@ -1,7 +1,11 @@
 .profile__about{
     margin: 0;
+    min-width: 288px;
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
     line-height: 22px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
