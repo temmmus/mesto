@@ -1,11 +1,24 @@
 .popup__header {
-    align-self: flex-start;
-    margin: 0;
-    margin-top: 34px;
-    margin-bottom: 24px;
-    margin-left: 36px;
+    width: 84%;
+    margin: 34px auto 24px;
     font-style: normal;
     font-weight: 900;
     font-size: 24px;
     line-height: 29px;
+}
+
+@media screen and (max-width: 480px) {
+    .popup__header {
+        margin: 25px auto 45px;
+        font-size: 18px;
+        line-height: 22px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .popup__header {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
 }

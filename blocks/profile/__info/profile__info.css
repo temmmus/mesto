@@ -1,9 +1,30 @@
 .profile__info {
-    width: 337px;
+    max-width: 60%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: baseline;
+    justify-content: start;
     column-gap: 25px;
     row-gap: 16px;
+}
+
+@media screen and (max-width: 768px) {
+    .profile__info {
+        column-gap: 20px;
+        row-gap: 14px;
+    }
+}
+
+@media screen and (max-width: 540px) {
+    .profile__info {
+        margin-top: 22px;
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 460px) {
+    .profile__info {
+        max-width: 96%;
+    }
 }

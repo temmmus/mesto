@@ -3,5 +3,5 @@
 }
 
 .place__like-checkbox:checked + .place__like-lable{
-    background-image: url("/images/like-button-active.png");
+    background-image: url("../../../images/like-button-active.png");
 }
