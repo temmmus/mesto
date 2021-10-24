@@ -21,7 +21,7 @@
                 <img src="./images/edit-button.svg" alt="Изменить" class="profile__edit-button">
                 <p class="profile__about">Исследователь океана</p>
             </div>
-            <button class="profile__add-button">
+            <button type="button" class="profile__add-button">
                 <img src="./images/add-button.svg" alt="Добавить" >
             </button>
         </div>
@@ -32,48 +32,42 @@
                     <img src="./images/Домбай.jpg" alt="Изображение" class="place__image">
                     <div class="place__wrapper">
                         <h2 class="place__title">Домбай</h2>
-                        <input type="checkbox" id="like-button_1" class="place__like-checkbox">
-                        <label for="like-button_1" class="place__like-lable"></label>
+                        <button type="button" class="place__like-button"></button>
                     </div>
                 </li>
                 <li class="place">
                     <img src="./images/Эльбрус.jpg" alt="Изображение" class="place__image">
                     <div class="place__wrapper">
                         <h2 class="place__title">Гора Эльбрус</h2>
-                        <input type="checkbox" id="like-button_2" class="place__like-checkbox">
-                        <label for="like-button_2" class="place__like-lable"></label>
+                        <button type="button" class="place__like-button"></button>
                     </div>
                 </li>
                 <li class="place">
                     <img src="./images/Маньпупунёр.jpg" alt="Изображение" class="place__image">
                     <div class="place__wrapper">
                         <h2 class="place__title">Маньпупунёр</h2>
-                        <input type="checkbox" id="like-button_3" class="place__like-checkbox">
-                        <label for="like-button_3" class="place__like-lable"></label>
+                        <button type="button" class="place__like-button"></button>
                     </div>
                 </li>
                 <li class="place">
                     <img src="./images/Озеро_Троицкое.jpg" alt="Изображение" class="place__image">
                     <div class="place__wrapper">
                         <h2 class="place__title">Озеро Троицкое</h2>
-                        <input type="checkbox" id="like-button_4" class="place__like-checkbox">
-                        <label for="like-button_4" class="place__like-lable"></label>
+                        <button type="button" class="place__like-button"></button>
                     </div>
                 </li>
                 <li class="place">
                     <img src="./images/Васюганские_болота.jpg" alt="Изображение" class="place__image">
                     <div class="place__wrapper">
                         <h2 class="place__title">Васюганские болота</h2>
-                        <input type="checkbox" id="like-button_5" class="place__like-checkbox">
-                        <label for="like-button_5" class="place__like-lable"></label>
+                        <button type="button" class="place__like-button"></button>
                     </div>
                 </li>
                 <li class="place">
                     <img src="./images/Озеро_Эльтон.jpg" alt="Изображение" class="place__image">
                     <div class="place__wrapper">
                         <h2 class="place__title">Озеро Эльтон</h2>
-                        <input type="checkbox" id="like-button_6" class="place__like-checkbox">
-                        <label for="like-button_6" class="place__like-lable"></label>
+                        <button type="button" class="place__like-button"></button>
                     </div>
                 </li>
             </ul>
@@ -86,14 +80,14 @@
     
     <form class="popup">
         <div class="popup__container">
-            <h2 class="popup__header">Редактирование&nbsp;профиля</h2>
-            <input type="text" placeholder="Имя" class="popup__input popup__input_name">
-            <input type="text" placeholder="О себе" class="popup__input popup__input_about">
-            <div class="popup__save-button">Сохранить</div>
-            <img src="./images/close-button.png" alt="Закрыть" class="popup__close-button">
+            <h2 class="popup__header">Редактирование профиля</h2>
+            <input type="text" name="popup__input_name" placeholder="Имя" class="popup__input popup__input_name">
+            <input type="text" name="popup__input_about" placeholder="О себе" class="popup__input popup__input_about">
+            <button type="submit"  class="popup__save-button">Сохранить</button>
+            <img src="./images/close-button.svg" alt="Закрыть" class="popup__close-button">
         </div>
     </form>
 
-    <script src="script.js"></script>
+    <script src="./scripts/script.js"></script>
 </body>
 </html>

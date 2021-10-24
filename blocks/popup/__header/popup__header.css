@@ -14,11 +14,3 @@
         line-height: 22px;
     }
 }
-
-@media screen and (max-width: 320px) {
-    .popup__header {
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-    }
-}

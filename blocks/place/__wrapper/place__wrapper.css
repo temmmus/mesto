@@ -1,7 +1,9 @@
 .place__wrapper {
     margin-top: 25px;
     margin-bottom: 31px;
+    margin-left: 21px;
+    margin-right: 15px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
 }

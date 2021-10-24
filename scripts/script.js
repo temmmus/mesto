@@ -11,8 +11,8 @@ let inputAbout = document.querySelector('.popup__input_about');
 
 // открытие попапа
 function openPopup() {
-    inputName.value = profileName.textContent
-    inputAbout.value = profileAbout.textContent
+    inputName.value = profileName.textContent;
+    inputAbout.value = profileAbout.textContent;
     popup.classList.add('popup_opened');
 };
 editButton.addEventListener('click', openPopup);
@@ -29,16 +29,17 @@ closeButton.addEventListener('click', closePopup);
 
 
 // обновление профиля
-function changeProfile() {
-    profileName.textContent = inputName.value
-    profileAbout.textContent = inputAbout.value
-    popup.classList.toggle('popup_opened');
+function changeProfile(event) {
+    profileName.textContent = inputName.value;
+    profileAbout.textContent = inputAbout.value;
+    event.preventDefault();
+    closePopup();
 };
-saveButton.addEventListener('click', changeProfile);
+popup.addEventListener('submit', changeProfile);
 
 document.addEventListener('keypress', function(event) {
     if (popup.classList.contains('popup_opened') && event.key === 'Enter') {
-        changeProfile()
+        changeProfile();
   }
 });
 

@@ -1,7 +1,5 @@
 .popup__container {
-    margin: 195px auto 0px auto;
     width: 430px;
-    height: 330px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -14,8 +12,6 @@
 
 @media screen and (max-width: 480px) {
     .popup__container {
-        margin: 123px auto 0px auto;
         max-width: 90%;
-        height: 322px;
     }
 }
