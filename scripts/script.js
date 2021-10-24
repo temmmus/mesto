@@ -4,8 +4,8 @@ let saveButton = document.querySelector(".popup__save-button");
 let popup = document.querySelector(".popup");
 let profileName = document.querySelector('.profile__name');
 let profileAbout = document.querySelector('.profile__about');
-let inputName = document.querySelector('.popup__input_name');
-let inputAbout = document.querySelector('.popup__input_about');
+let inputName = document.querySelector('.popup__input_type_name');
+let inputAbout = document.querySelector('.popup__input_type_about');
 
 
 
@@ -29,7 +29,7 @@ closeButton.addEventListener('click', closePopup);
 
 
 // обновление профиля
-function changeProfile(event) {
+function changeProfile() {
     profileName.textContent = inputName.value;
     profileAbout.textContent = inputAbout.value;
     event.preventDefault();

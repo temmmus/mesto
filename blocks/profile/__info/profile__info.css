@@ -3,9 +3,8 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: start;
-    column-gap: 25px;
+    align-items: center;
+    column-gap: 18px;
     row-gap: 16px;
 }
 
@@ -18,13 +17,10 @@
 
 @media screen and (max-width: 540px) {
     .profile__info {
+        max-width: 282px;
         margin-top: 22px;
         justify-content: center;
-    }
-}
-
-@media screen and (max-width: 460px) {
-    .profile__info {
-        max-width: 96%;
+        column-gap: 10px;
+        row-gap: 14px;
     }
 }
