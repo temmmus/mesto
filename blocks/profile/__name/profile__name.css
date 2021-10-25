@@ -1,5 +1,6 @@
 .profile__name {
     margin: 0;
+    flex-basis: 60%;
     font-style: normal;
     font-weight: 500;
     font-size: 42px;
@@ -18,6 +19,7 @@
 
 @media screen and (max-width: 480px) {
     .profile__name {
+        flex-basis: 70%;
         font-size: 27px;
         line-height: 33px;
     }
