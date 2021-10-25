@@ -4,8 +4,8 @@
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
-    column-gap: 18px;
-    row-gap: 16px;
+    column-gap: 24px;
+    row-gap: 7px;
 }
 
 @media screen and (max-width: 768px) {
@@ -18,8 +18,9 @@
 @media screen and (max-width: 540px) {
     .profile__info {
         max-width: 282px;
-        margin-top: 22px;
+        margin-top: 20px;
         justify-content: center;
+        align-items: center;
         column-gap: 10px;
         row-gap: 14px;
     }
