@@ -6,7 +6,7 @@
     height: 19px;
     border: none;
     background-color: transparent;
-    background-image: url("../../../../images/remove-button.svg"); 
+    background-image: url("../../../images/remove-button.svg");
     background-repeat: no-repeat;
     background-position: center;
 }

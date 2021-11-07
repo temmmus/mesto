@@ -1,7 +1,7 @@
 .popup {
     visibility: hidden;
     opacity: 0;
-    transition: visibility 0s, opacity 0.2s ease-out;
+    transition: visibility 0s, opacity 0.3s linear;
     width: 100%;
     min-height: 100%;
     overflow: hidden;
