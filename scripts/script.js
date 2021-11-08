@@ -49,7 +49,7 @@ function addCard (card) {
         event.target.closest('.place').remove();
     });
     // открытие попапа с картинкой  
-    // document.querySelector('.place__image').addEventListener('click', handlerImageViewPopupOpen );
+    document.querySelector('.place__image').addEventListener('click', handlerImageViewPopupOpen );
 }
 
 
