@@ -18,10 +18,6 @@ const imageViewPopup = document.querySelector('.popup_type_view-image'); // По
 const cardsContainer = document.querySelector('.places'); // Список карточек
 const cardTemplate = document.querySelector('#place-template'); // Шаблон карточки
 
-
-
-
-
 // Создание карточки
 const generateCard = (title, image) => {
     const card = cardTemplate.content.querySelector('.place').cloneNode(true);
@@ -43,12 +39,15 @@ const generateCard = (title, image) => {
     return card;
 };
 
-// Добавление карточки в DOM
-const renderElement = (container, element) => {
+// Добавление карточки в DOM в начало контейнера
+const renderPrependElement = (container, element) => {
     container.prepend(element);
 };
 
-
+// Добавление карточки в DOM в конец контейнера
+const renderAppendElement = (container, element) => {
+    container.append(element);
+};
 
 // Открытие попапа
 const openPopup = (elem) => {
@@ -74,15 +73,12 @@ const closePopup = (elem) => {
     elem.classList.remove('popup_opened');
 };
 
-
-
 // Открытие формы изменения профиля
 function handleEditProfilePopupOpen() {
     profileNameInput.value = profileName.textContent;
     profileAboutInput.value = profileAbout.textContent;
     openPopup(editProfilePopup);
 };
-
 
 // Открытие превью с картинкой
 function handleImageViewPopupOpen(event) {
@@ -95,8 +91,6 @@ function handleImageViewPopupOpen(event) {
     openPopup(imageViewPopup);
 };
 
-
-
 // Обновление профиля через форму
 function changeProfile(event) {
     profileName.textContent = profileNameInput.value;
@@ -107,7 +101,7 @@ function changeProfile(event) {
 
 // Создание карточки через форму
 const handleImageFormSubmit = (event) =>  {
-    renderElement(cardsContainer, generateCard(placeNameInput.value, placeLinkInput.value)); // создаем карточку и вставляем в DOM
+    renderPrependElement(cardsContainer, generateCard(placeNameInput.value, placeLinkInput.value)); // создаем карточку и вставляем в DOM
     closePopup(addCardPopup); // закрываем попап
     addCardPopup.querySelector('.popup__form').reset(); // очищаем поля формы
     event.preventDefault();
@@ -115,9 +109,8 @@ const handleImageFormSubmit = (event) =>  {
 
 // Создание дефолтных карточек
 function initialCardsCreation (cards) { 
-    cards.forEach(elem => renderElement(cardsContainer, generateCard(elem.name, elem.link)));
+    cards.forEach(elem => renderAppendElement(cardsContainer, generateCard(elem.name, elem.link)));
 };
-
 
 window.addEventListener('load', () => initialCardsCreation(initialCards) );
 editProfileButton.addEventListener('click', handleEditProfilePopupOpen);
