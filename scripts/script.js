@@ -81,13 +81,6 @@ const closePopup = (elem) => {
     elem.classList.remove('popup_opened');
 };
 
-// Открытие формы изменения профиля
-function handleEditProfilePopupOpen() {
-    profileNameInput.value = profileName.textContent;
-    profileAboutInput.value = profileAbout.textContent;
-    openPopup(editProfilePopup);
-};
-
 // Открытие превью с картинкой
 function handleImageViewPopupOpen(event) {
     let placeImage = event.target.src;
@@ -120,8 +113,15 @@ function initialCardsCreation (cards) {
     cards.forEach(elem => renderAppendElement(cardsContainer, generateCard(elem.name, elem.link)));
 };
 
-window.addEventListener('load', () => initialCardsCreation(initialCards) );
-editProfileButton.addEventListener('click', handleEditProfilePopupOpen);
+// Заполнение формы изменения профиля дефолтными значеними
+function setEditProfile() {
+    profileNameInput.value = profileName.textContent;
+    profileAboutInput.value = profileAbout.textContent;
+};
+
+initialCardsCreation(initialCards);
+setEditProfile();
+editProfileButton.addEventListener('click', () => openPopup(editProfilePopup) );
 addCardButton.addEventListener('click', () => openPopup(addCardPopup) );
 editProfilePopup.addEventListener('submit', changeProfile);
 addCardPopup.addEventListener('submit', handleImageFormSubmit);

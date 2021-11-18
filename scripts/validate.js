@@ -1,8 +1,7 @@
 // показать ошибку
 const showInputError = (formElement, inputElement, errorMessage) => {
-    const errorElement = formElement.querySelector(`.${inputElement.name}-error`);
+    const errorElement = formElement.querySelector(`.${inputElement.name}_type_error`);
 
-    toggleButtonState(formElement);
     inputElement.classList.add('popup__input_type_error');
     errorElement.textContent = errorMessage;
     errorElement.classList.add('popup__input-error_active');
@@ -10,14 +9,12 @@ const showInputError = (formElement, inputElement, errorMessage) => {
 
 // скрыть ошибку
 const hideInputError = (formElement, inputElement) => {
-    const errorElement = formElement.querySelector(`.${inputElement.name}-error`);
-
-    toggleButtonState(formElement);
+    const errorElement = formElement.querySelector(`.${inputElement.name}_type_error`);
+    
     inputElement.classList.remove('popup__input_type_error');
     errorElement.classList.remove('popup__input-error_active');
     errorElement.textContent = '';
 };
-
 
 // проверка валидации полей ввода
 const checkInputValidity = (formElement, inputElement) => {
@@ -28,23 +25,23 @@ const checkInputValidity = (formElement, inputElement) => {
     }
 };
 
-  
 const setEventListeners = (formElement) => {
     const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
     const buttonElement = formElement.querySelector('.popup__save-button');
 
     toggleButtonState(inputList, buttonElement);
-
+    
     inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', function () {
         checkInputValidity(formElement, inputElement);
+        toggleButtonState(inputList, buttonElement);
       });
     });
 };
 
 function hasInvalidInput(inputList) {
+  
     return inputList.some((inputElement) => {
-
     return !inputElement.validity.valid;
   })
 };
@@ -60,12 +57,6 @@ function toggleButtonState(inputList, buttonElement) {
     }
   };
 
-
-
-
-
-
-
 // включить валидацию
 const enableValidation = () => {
     let formList = Array.from(document.querySelectorAll('.popup__form'));
@@ -78,11 +69,4 @@ const enableValidation = () => {
     });
 };
 
-enableValidation({
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__button',
-    inactiveButtonClass: 'popup__button_disabled',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__error_visible'
-  }); 
+enableValidation(); 
