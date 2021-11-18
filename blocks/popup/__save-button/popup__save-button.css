@@ -3,20 +3,12 @@
     margin-bottom: 37px;
     width: 100%;
     text-align: center;
-    background-color: #000000;
-    color: #FFFFFF;
-    border: none;
     border-radius: 2px;
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
     line-height: 50px;
     transition: opacity .2s linear;
-}
-
-.popup__save-button:hover {
-    opacity: 0.8;
-    cursor: pointer;
 }
 
 @media screen and (max-width: 480px) {

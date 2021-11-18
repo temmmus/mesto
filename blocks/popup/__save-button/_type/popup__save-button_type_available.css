@@ -1,0 +1,10 @@
+.popup__save-button_type_available {
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+
+.popup__save-button_type_available:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}

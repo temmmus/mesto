@@ -59,7 +59,7 @@ const openPopup = (elem) => {
     // закрытие по нажатию на оверлей
     elem.addEventListener('click', function (evt) {
         if (evt.target.classList.contains('popup_opened')) {
-              evt.target.classList.remove('popup_opened');
+            closePopup(evt.target);
         }
       });
 
