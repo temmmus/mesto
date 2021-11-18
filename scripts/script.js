@@ -56,8 +56,16 @@ const openPopup = (elem) => {
     // закрытие по кнопке
     elem.querySelector('.popup__close-button').addEventListener('click', () => closePopup(elem));
 
+    // закрытие по нажатию на оверлей
+    elem.addEventListener('click', function (evt) {
+        if (evt.target.classList.contains('popup_opened')) {
+              evt.target.classList.remove('popup_opened');
+        }
+      });
+
     // закрытие по Esc
     window.addEventListener('keydown', handleEscapeKeydown);
+
 };
 
 // Закрытие попапа по Esc
