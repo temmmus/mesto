@@ -57,31 +57,40 @@ const openPopup = (elem) => {
     setEditProfile();
 
     // закрытие по кнопке
-    elem.querySelector('.popup__close-button').addEventListener('click', () => closePopup(elem), {once: true});
+    elem.querySelector('.popup__close-button').addEventListener('click', closeByButtonClick, {once: true});
 
     // закрытие по нажатию на оверлей
-    elem.addEventListener('click', function (evt) {
-        if (evt.target.classList.contains('popup_opened')) {
-            closePopup(evt.target);
-        }
-      });
+    elem.addEventListener('click', closeByOverlayClick, {once: true});
 
     // закрытие по Esc
-    window.addEventListener('keydown', handleEscapeKeydown);
-
+    window.addEventListener('keydown', handleEscapeKeydown, {once: true});
 };
 
+// Закрытие попапа
+function closePopup(evt) { 
+    document.querySelector('.popup_opened').classList.remove('popup_opened');
+};
+
+// Закрытие попапа по кнопке
+function closeByButtonClick(evt) {
+    if (evt.target.classList.contains('popup__close-button')) { 
+        closePopup(evt); 
+    }
+} 
+
+// Закрытие попапа по нажатию на оверлей
+function closeByOverlayClick(evt) {
+    if (evt.target.classList.contains('popup_opened')) { 
+        closePopup(evt); 
+    }
+} 
+
 // Закрытие попапа по Esc
-function handleEscapeKeydown(event) {
-    if (event.key === 'Escape') { 
+function handleEscapeKeydown(evt) {
+    if (evt.key === 'Escape') { 
         const openedPopup = document.querySelector('.popup_opened')
         closePopup(openedPopup)
     }
-};
-
-// Закрыти попапа
-const closePopup = (elem) => { 
-    elem.classList.remove('popup_opened');
 };
 
 // Открытие превью с картинкой
