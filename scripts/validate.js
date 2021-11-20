@@ -1,18 +1,28 @@
+const config = {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__save-button',
+    inactiveButtonClass: 'popup__save-button_type_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__input-error_active'
+}
+
 // показать ошибку
 const showInputError = (formElement, inputElement, errorMessage) => {
   const errorElement = inputElement.nextElementSibling;
 
-  inputElement.classList.add('popup__input_type_error');
+//   inputElement.classList.add('popup__input_type_error');
+  inputElement.classList.add(config.inputErrorClass);
   errorElement.textContent = errorMessage;
-  errorElement.classList.add('popup__input-error_active');
+  errorElement.classList.add(config.errorClass);
 };
 
 // скрыть ошибку
 const hideInputError = (formElement, inputElement) => {
   const errorElement = inputElement.nextElementSibling;
 
-  inputElement.classList.remove('popup__input_type_error');
-  errorElement.classList.remove('popup__input-error_active');
+  inputElement.classList.remove(config.inputErrorClass);
+  errorElement.classList.remove(config.errorClass);
   errorElement.textContent = '';
 };
 
@@ -26,8 +36,8 @@ const checkInputValidity = (formElement, inputElement) => {
 };
 
 const setEventListeners = (formElement) => {
-    const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
-    const buttonElement = formElement.querySelector('.popup__save-button');
+    const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
+    const buttonElement = formElement.querySelector(config.submitButtonSelector);
 
     toggleButtonState(inputList, buttonElement);
     
@@ -49,17 +59,17 @@ function hasInvalidInput(inputList) {
 // отключение/включение кнопки сохранить
 function toggleButtonState(inputList, buttonElement) {
     if ( hasInvalidInput(inputList) ) {
-        buttonElement.classList.remove('popup__save-button_type_available');
-        buttonElement.classList.add('popup__save-button_type_disabled');
+        buttonElement.classList.add(config.inactiveButtonClass);
+        buttonElement.setAttribute('disabled', '');
     } else {
-        buttonElement.classList.remove('popup__save-button_type_disabled');
-        buttonElement.classList.add('popup__save-button_type_available');
+        buttonElement.classList.remove(config.inactiveButtonClass);
+        buttonElement.removeAttribute('disabled', '');
     }
   };
 
 // включить валидацию
-const enableValidation = () => {
-    let formList = Array.from(document.querySelectorAll('.popup__form'));
+const enableValidation = (config) => {
+    const formList = Array.from(document.querySelectorAll(config.formSelector));
 
     formList.forEach( (formElement) => {
       formElement.addEventListener('submit', function (evt) {
@@ -69,4 +79,4 @@ const enableValidation = () => {
     });
 };
 
-enableValidation(); 
+enableValidation(config); 

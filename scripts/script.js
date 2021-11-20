@@ -53,8 +53,11 @@ const renderAppendElement = (container, element) => {
 const openPopup = (elem) => {
     elem.classList.add('popup_opened');
 
+    // заполнение полей формы
+    setEditProfile();
+
     // закрытие по кнопке
-    elem.querySelector('.popup__close-button').addEventListener('click', () => closePopup(elem));
+    elem.querySelector('.popup__close-button').addEventListener('click', () => closePopup(elem), {once: true});
 
     // закрытие по нажатию на оверлей
     elem.addEventListener('click', function (evt) {
@@ -83,8 +86,8 @@ const closePopup = (elem) => {
 
 // Открытие превью с картинкой
 function handleImageViewPopupOpen(event) {
-    let placeImage = event.target.src;
-    let placeName = event.target.alt;
+    const placeImage = event.target.src;
+    const placeName = event.target.alt;
     
     imageViewPopup.querySelector('.popup__image').src = placeImage;
     imageViewPopup.querySelector('.popup__image-title').textContent = placeName;
@@ -120,7 +123,6 @@ function setEditProfile() {
 };
 
 initialCardsCreation(initialCards);
-setEditProfile();
 editProfileButton.addEventListener('click', () => openPopup(editProfilePopup) );
 addCardButton.addEventListener('click', () => openPopup(addCardPopup) );
 editProfilePopup.addEventListener('submit', changeProfile);
