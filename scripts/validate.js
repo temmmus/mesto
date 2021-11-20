@@ -8,17 +8,16 @@ const config = {
 }
 
 // показать ошибку
-const showInputError = (formElement, inputElement, errorMessage) => {
+const showInputError = (formElement, inputElement, errorMessage, config) => {
   const errorElement = inputElement.nextElementSibling;
 
-//   inputElement.classList.add('popup__input_type_error');
   inputElement.classList.add(config.inputErrorClass);
   errorElement.textContent = errorMessage;
   errorElement.classList.add(config.errorClass);
 };
 
 // скрыть ошибку
-const hideInputError = (formElement, inputElement) => {
+const hideInputError = (formElement, inputElement, config) => {
   const errorElement = inputElement.nextElementSibling;
 
   inputElement.classList.remove(config.inputErrorClass);
@@ -29,22 +28,22 @@ const hideInputError = (formElement, inputElement) => {
 // проверка валидации полей ввода
 const checkInputValidity = (formElement, inputElement) => {
     if (!inputElement.validity.valid) {
-      showInputError(formElement, inputElement, inputElement.validationMessage);
+      showInputError(formElement, inputElement, inputElement.validationMessage, config);
     } else {
-      hideInputError(formElement, inputElement);
+      hideInputError(formElement, inputElement, config);
     }
 };
 
-const setEventListeners = (formElement) => {
+const setEventListeners = (formElement, config) => {
     const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
     const buttonElement = formElement.querySelector(config.submitButtonSelector);
 
-    toggleButtonState(inputList, buttonElement);
+    toggleButtonState(inputList, buttonElement, config);
     
     inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', function () {
         checkInputValidity(formElement, inputElement);
-        toggleButtonState(inputList, buttonElement);
+        toggleButtonState(inputList, buttonElement, config);
       });
     });
 };
@@ -57,7 +56,7 @@ function hasInvalidInput(inputList) {
 };
 
 // отключение/включение кнопки сохранить
-function toggleButtonState(inputList, buttonElement) {
+function toggleButtonState(inputList, buttonElement, config) {
     if ( hasInvalidInput(inputList) ) {
         buttonElement.classList.add(config.inactiveButtonClass);
         buttonElement.setAttribute('disabled', '');
@@ -75,7 +74,7 @@ const enableValidation = (config) => {
       formElement.addEventListener('submit', function (evt) {
         evt.preventDefault();
       });
-    setEventListeners(formElement);
+    setEventListeners(formElement, config);
     });
 };
 

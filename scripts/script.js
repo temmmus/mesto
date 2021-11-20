@@ -53,9 +53,6 @@ const renderAppendElement = (container, element) => {
 const openPopup = (elem) => {
     elem.classList.add('popup_opened');
 
-    // заполнение полей формы
-    setEditProfile();
-
     // закрытие по кнопке
     elem.querySelector('.popup__close-button').addEventListener('click', closeByButtonClick);
 
@@ -135,7 +132,7 @@ function setEditProfile() {
 };
 
 initialCardsCreation(initialCards);
-editProfileButton.addEventListener('click', () => openPopup(editProfilePopup) );
+editProfileButton.addEventListener('click', () => openPopup(editProfilePopup),  setEditProfile());
 addCardButton.addEventListener('click', () => openPopup(addCardPopup) );
 editProfilePopup.addEventListener('submit', changeProfile);
 addCardPopup.addEventListener('submit', handleImageFormSubmit);
