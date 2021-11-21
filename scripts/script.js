@@ -132,7 +132,8 @@ function setEditProfile() {
 };
 
 initialCardsCreation(initialCards);
-editProfileButton.addEventListener('click', () => openPopup(editProfilePopup),  setEditProfile());
+editProfileButton.addEventListener('click', () => openPopup(editProfilePopup));
+editProfileButton.addEventListener('click', setEditProfile);
 addCardButton.addEventListener('click', () => openPopup(addCardPopup) );
 editProfilePopup.addEventListener('submit', changeProfile);
 addCardPopup.addEventListener('submit', handleImageFormSubmit);
