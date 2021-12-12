@@ -1,5 +1,5 @@
-import {pageElements} from './pageElements.js';
-import {formConfig} from './formConfig.js';
+import {pageElements} from './page-elements.js';
+import {formConfig} from './form-config.js';
 import {initialCards} from './initial-сards.js';
 import {openPopup, closePopup} from './popup-functions.js';
 import Card from './Card.js';

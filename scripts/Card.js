@@ -1,4 +1,4 @@
-import {pageElements} from './pageElements.js';
+import {pageElements} from './page-elements.js';
 import {openPopup} from './popup-functions.js';
 
 export default class Card {
