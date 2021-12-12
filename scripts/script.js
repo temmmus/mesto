@@ -20,7 +20,11 @@ const cardTemplate = document.querySelector('#place-template'); // Шаблон 
 
 // Создание карточки
 const generateCard = (title, image) => {
-    const card = cardTemplate.content.querySelector('.place').cloneNode(true);
+    const card = cardTemplate
+        .content
+        .querySelector('.place')
+        .cloneNode(true);
+        
     card.querySelector('.place__title').textContent = title;
     card.querySelector('.place__image').src = image;
     card.querySelector('.place__image').alt = title;
