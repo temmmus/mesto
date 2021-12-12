@@ -49,10 +49,11 @@ function initialCardsCreation(cards) {
   });
 };
 
-const validateProfileForm = new FormValidator(formConfig, pageElements.EDIT_PROFILE_POPUP);
-validateProfileForm.enableValidation();
-
-
+// включение валидации форм
+function formValidation(form) {
+  const validation = new FormValidator(formConfig, form);
+  validation.enableValidation();
+}
 
 // добавление слушателей
 pageElements.ADD_CARD_BUTTON.addEventListener('click', () => openPopup(pageElements.ADD_CARD_POPUP) );
@@ -63,5 +64,6 @@ pageElements.EDIT_PROFILE_BUTTON.addEventListener('click', () => {
   setEditProfile();
 }); 
 
-// создание дефолтных карточек
-initialCardsCreation(initialCards);
+initialCardsCreation(initialCards); // создать дефолтных карточек
+formValidation(pageElements.EDIT_PROFILE_POPUP); // включить валидацию формы изменения профиля 
+formValidation(pageElements.ADD_CARD_POPUP); // включить валидацию формы добавления карточки 
