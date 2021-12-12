@@ -49,7 +49,6 @@ const setEventListeners = (formElement, config) => {
 };
 
 function hasInvalidInput(inputList) {
-  
     return inputList.some((inputElement) => {
     return !inputElement.validity.valid;
   })

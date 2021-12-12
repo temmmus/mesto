@@ -1,18 +1,20 @@
+import {pageElements} from './pageElements.js';
+import {openPopup} from './popup-functions.js';
+
 export default class Card {
-    constructor(title, link) {
+    constructor(title, link, template) {
         this._title = title;
         this._link = link;
+        this._template = template;
     }
     
-    // получение шаблонаы
+    // получение шаблона
     _getTemplate() {
-        // забираем разметку из HTML и клонируем элемент
-        const cardElement = document
-            .querySelector('#place-template')
+        // забираем html-разметку шаблона карточки и клонируем элемент
+        const cardElement = this._template
             .content
             .querySelector('.place')
-            .cloneNode(true);
-          
+            .cloneNode(true); 
         // возвращаем DOM-элемент карточки
         return cardElement;
     } 
@@ -36,9 +38,6 @@ export default class Card {
 
     // добавление слушателей
     _setEventListeners() {
-        // открытие попапа
-        this._element.querySelector('.place__image').addEventListener('click', this._handleOpenPopup);
-
         // лайк карточки
         this._element.querySelector('.place__like-button').addEventListener('click', event => {
             event.target.closest('.place__like-button').classList.toggle('place__like-button_active');
@@ -48,6 +47,9 @@ export default class Card {
         this._element.querySelector('.place__remove-button').addEventListener('click', event => {
             event.target.closest('.place').remove();
         });
+
+        // открытие попапа
+        this._element.querySelector('.place__image').addEventListener('click', this._handleOpenPopup);
       }
     
 
@@ -56,20 +58,12 @@ export default class Card {
         const placeImage = evt.target.src;
         const placeName = evt.target.alt;
     
-        const imageViewPopup = document.querySelector('.popup_type_view-image'); // Попап превью
-
         // вставка данных в попап
-        imageViewPopup.querySelector('.popup__image').src = placeImage;
-        imageViewPopup.querySelector('.popup__image-title').textContent = placeName;
-    
-        // добавление класса для открытия попапа
-        imageViewPopup.classList.add('popup_opened');
+        pageElements.IMAGE_VIEW_POPUP.querySelector('.popup__image').src = placeImage;
+        pageElements.IMAGE_VIEW_POPUP.querySelector('.popup__image-title').textContent = placeName;
 
-        // закрытие попапа по кнопке
-        imageViewPopup.querySelector('.popup__close-button').addEventListener('click', () => {
-            imageViewPopup.classList.remove('popup_opened');
-        });
-
+        // вызов функции открытия попапа
+        openPopup(pageElements.IMAGE_VIEW_POPUP);
     }
 }
 
