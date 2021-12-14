@@ -15,17 +15,13 @@ export default class Card {
             .content
             .querySelector('.place')
             .cloneNode(true); 
-        // возвращаем DOM-элемент карточки
-        return cardElement;
+        return cardElement; // возвращаем DOM-элемент карточки
     } 
     
     // создание карточки
     generateCard() {
-        // записываем разметку в приватное поле _element
-        this._element = this._getTemplate();
-
-        // добавляем слушатели
-        this._setEventListeners();
+        this._element = this._getTemplate(); // записываем разметку в приватное поле _element
+        this._setEventListeners(); // добавляем слушатели
 
         // добавляем данные
         this._element.querySelector('.place__title').textContent = this._title;
