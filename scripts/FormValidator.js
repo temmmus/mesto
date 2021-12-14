@@ -5,7 +5,7 @@ export default class FormValidator {
     }
 
     // показать ошибку
-    _showInputError(formElement, inputElement, errorMessage, config) {
+    _showInputError(inputElement, errorMessage) {
         const errorElement = inputElement.nextElementSibling;
   
         inputElement.classList.add(this._config.inputErrorClass);
@@ -14,7 +14,7 @@ export default class FormValidator {
     };
   
     // скрыть ошибку
-    _hideInputError(formElement, inputElement, config) {
+    _hideInputError(inputElement) {
         const errorElement = inputElement.nextElementSibling;
   
         inputElement.classList.remove(this._config.inputErrorClass);
@@ -23,11 +23,11 @@ export default class FormValidator {
     };
   
     // проверка валидации полей ввода
-    _checkInputValidity(formElement, inputElement) {
+    _checkInputValidity(inputElement) {
         if (!inputElement.validity.valid) {
-            this._showInputError(formElement, inputElement, inputElement.validationMessage, this._config);
+            this._showInputError(inputElement, inputElement.validationMessage);
         } else {
-            this._hideInputError(formElement, inputElement, this._config);
+            this._hideInputError(inputElement);
         }
     };
 
@@ -50,29 +50,22 @@ export default class FormValidator {
   };
 
     // добавление слушателей
-    _setEventListeners(formElement, config) {
-        const inputList = Array.from(formElement.querySelectorAll(this._config.inputSelector));
-        const buttonElement = formElement.querySelector(this._config.submitButtonSelector);
+    _setEventListeners() {
+        const inputList = Array.from(this._element.querySelectorAll(this._config.inputSelector));
+        const buttonElement = this._element.querySelector(this._config.submitButtonSelector);
 
-        this._toggleButtonState(inputList, buttonElement, config);
+        this._toggleButtonState(inputList, buttonElement, this._config);
     
         inputList.forEach((inputElement) => {
             inputElement.addEventListener('input', () => {
-                this._checkInputValidity(formElement, inputElement);
+                this._checkInputValidity(inputElement);
                 this._toggleButtonState(inputList, buttonElement, this._config);
             });
         });
     };
-
+    
    // влючение валидации
     enableValidation() {
-        const formList = Array.from(document.querySelectorAll(this._config.formSelector));
-
-        formList.forEach( (formElement) => {
-            formElement.addEventListener('submit', function (evt) {
-            evt.preventDefault();
-        });
-        this._setEventListeners(formElement, this._config);
-     });
+        this._setEventListeners();
     };
 }

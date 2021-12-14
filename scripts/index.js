@@ -36,8 +36,8 @@ function handleImageFormSubmit(event) {
   const cardElement = card.generateCard(); // создание карточкм и возвращение наружу
   renderPrependElement(pageElements.CARDS_CONTAINER, cardElement); // добавление в DOM
   closePopup(event); // закрыть попап
-  pageElements.ADD_CARD_POPUP.querySelector('.popup__form').reset(); // очистить поля формы
-  event.preventDefault();
+  // pageElements.ADD_CARD_POPUP.querySelector('.popup__form').reset(); // очистить поля формы
+  // event.preventDefault();
 };
 
 // создание дефолтных карточек

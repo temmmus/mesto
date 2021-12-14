@@ -7,7 +7,7 @@ export default class Card {
         this._link = link;
         this._template = template;
     }
-    
+
     // получение шаблона
     _getTemplate() {
         // забираем html-разметку шаблона карточки и клонируем элемент
@@ -60,6 +60,7 @@ export default class Card {
     
         // вставка данных в попап
         pageElements.IMAGE_VIEW_POPUP.querySelector('.popup__image').src = placeImage;
+        pageElements.IMAGE_VIEW_POPUP.querySelector('.popup__image').alt = placeName;
         pageElements.IMAGE_VIEW_POPUP.querySelector('.popup__image-title').textContent = placeName;
 
         // вызов функции открытия попапа
