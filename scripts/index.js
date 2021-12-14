@@ -20,6 +20,13 @@ function setEditProfile() {
   pageElements.PROFILE_ABOUT_INPUT.value = pageElements.PROFILE_ABOUT.textContent;
 };
 
+// создание карточки
+function createCard(title, link, template) {
+  const card = new Card(title, link, template); // создание экземпляра карточки
+  const cardElement = card.generateCard(); // создание карточкм и возвращение наружу
+  return cardElement
+};
+
 // добавление карточки в DOM в начало контейнера
 function renderPrependElement(container, element) {
   container.prepend(element);
@@ -32,19 +39,17 @@ const renderAppendElement = (container, element) => {
 
 // создание карточки через форму
 function handleImageFormSubmit(event) {
-  const card = new Card(pageElements.PLACE_NAME_INPUT.value, pageElements.PLACE_LINK_INPUT.value, pageElements.CARD_TEMPLATE); // создание экземпляра карточки
-  const cardElement = card.generateCard(); // создание карточкм и возвращение наружу
+  const cardElement = createCard(pageElements.PLACE_NAME_INPUT.value, pageElements.PLACE_LINK_INPUT.value, pageElements.CARD_TEMPLATE); // создание карточки
   renderPrependElement(pageElements.CARDS_CONTAINER, cardElement); // добавление в DOM
   closePopup(event); // закрыть попап
-  // pageElements.ADD_CARD_POPUP.querySelector('.popup__form').reset(); // очистить поля формы
-  // event.preventDefault();
+  pageElements.ADD_CARD_POPUP.querySelector('.popup__form').reset(); // очистить поля формы
+  event.preventDefault();
 };
 
 // создание дефолтных карточек
 function initialCardsCreation(cards) { 
   cards.forEach((item) => {
-    const card = new Card(item.title, item.link, pageElements.CARD_TEMPLATE); // создание экземпляра карточки
-    const cardElement = card.generateCard(); // создание карточкм и возвращение наружу
+    const cardElement = createCard(item.title, item.link, pageElements.CARD_TEMPLATE); // создание карточки
     renderAppendElement(pageElements.CARDS_CONTAINER, cardElement); // добавление в DOM
   });
 };
