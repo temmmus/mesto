@@ -5,6 +5,11 @@ import {openPopup, closePopup} from './popup-functions.js';
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 
+const addCardPopup = pageElements.ADD_CARD_POPUP;
+const addCardPopupForm = addCardPopup.querySelector('.popup__form');
+const editProfilePopup = pageElements.EDIT_PROFILE_POPUP;
+const editProfilePopupForm = editProfilePopup.querySelector('.popup__form');
+
 
 // обновление профиля через форму
 function changeProfile(event) {
@@ -42,7 +47,7 @@ function handleImageFormSubmit(event) {
   const cardElement = createCard(pageElements.PLACE_NAME_INPUT.value, pageElements.PLACE_LINK_INPUT.value, pageElements.CARD_TEMPLATE); // создание карточки
   renderPrependElement(pageElements.CARDS_CONTAINER, cardElement); // добавление в DOM
   closePopup(event); // закрыть попап
-  pageElements.ADD_CARD_POPUP.querySelector('.popup__form').reset(); // очистить поля формы
+  addCardPopupForm.reset(); // очистить поля формы
   event.preventDefault();
 };
 
@@ -55,20 +60,30 @@ function initialCardsCreation(cards) {
 };
 
 // включение валидации форм
-function formValidation(form) {
-  const validation = new FormValidator(formConfig, form);
-  validation.enableValidation();
-}
-
-// добавление слушателей
-pageElements.ADD_CARD_BUTTON.addEventListener('click', () => openPopup(pageElements.ADD_CARD_POPUP) );
-pageElements.EDIT_PROFILE_POPUP.addEventListener('submit', changeProfile);
-pageElements.ADD_CARD_POPUP.addEventListener('submit', handleImageFormSubmit);
-pageElements.EDIT_PROFILE_BUTTON.addEventListener('click', () => {
-  openPopup(pageElements.EDIT_PROFILE_POPUP);
-  setEditProfile();
-}); 
+const formValidators = {} // создание объекта для записи форм
+function enableValidation(config) {
+  const formList = Array.from(document.querySelectorAll(config.formSelector))
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(config, formElement) // создание экземпляров валидации форм   
+    formValidators[formElement.name] = validator; // запись форм в объект
+    validator.enableValidation();
+  });
+};
 
 initialCardsCreation(initialCards); // создать дефолтных карточек
-formValidation(pageElements.EDIT_PROFILE_POPUP); // включить валидацию формы изменения профиля 
-formValidation(pageElements.ADD_CARD_POPUP); // включить валидацию формы добавления карточки 
+enableValidation(formConfig); // включить валидацию форм
+
+// добавление слушателей попапа добавления карточек
+pageElements.ADD_CARD_BUTTON.addEventListener('click', () => {
+  openPopup(addCardPopup);
+  formValidators[addCardPopupForm.name].resetValidation();
+});
+addCardPopup.addEventListener('submit', handleImageFormSubmit);
+
+// добавление слушателей попапа профиля
+pageElements.EDIT_PROFILE_BUTTON.addEventListener('click', () => {
+  openPopup(editProfilePopup);
+  formValidators[editProfilePopupForm.name].resetValidation();
+  setEditProfile();
+}); 
+editProfilePopup.addEventListener('submit', changeProfile);

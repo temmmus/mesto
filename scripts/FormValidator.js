@@ -41,10 +41,10 @@ export default class FormValidator {
     // отключение/включение кнопки сохранить
     _toggleButtonState(inputList, buttonElement, config) {
         if ( this._hasInvalidInput(inputList) ) {
-            buttonElement.classList.add(this._config.inactiveButtonClass);
+            buttonElement.classList.add(config.inactiveButtonClass);
             buttonElement.setAttribute('disabled', '');
         } else {
-            buttonElement.classList.remove(this._config.inactiveButtonClass);
+            buttonElement.classList.remove(config.inactiveButtonClass);
             buttonElement.removeAttribute('disabled', '');
         }
   };
@@ -53,9 +53,7 @@ export default class FormValidator {
     _setEventListeners() {
         const inputList = Array.from(this._element.querySelectorAll(this._config.inputSelector));
         const buttonElement = this._element.querySelector(this._config.submitButtonSelector);
-
         this._toggleButtonState(inputList, buttonElement, this._config);
-    
         inputList.forEach((inputElement) => {
             inputElement.addEventListener('input', () => {
                 this._checkInputValidity(inputElement);
@@ -64,6 +62,15 @@ export default class FormValidator {
         });
     };
     
+    resetValidation() {
+        const inputList = Array.from(this._element.querySelectorAll(this._config.inputSelector));
+        const buttonElement = this._element.querySelector(this._config.submitButtonSelector);
+        this._toggleButtonState(inputList, buttonElement, this._config);
+        inputList.forEach((inputElement) => {
+            this._hideInputError(inputElement) 
+        });    
+    }
+
    // влючение валидации
     enableValidation() {
         this._setEventListeners();
