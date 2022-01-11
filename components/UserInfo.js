@@ -20,6 +20,4 @@ export default class UserInfo {
     pageElements.PROFILE_ABOUT.textContent =
       data["popup__input_type_profile-about"];
   }
-
-  this.setUserInfo({})
 }
