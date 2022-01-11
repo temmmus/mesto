@@ -1,23 +1,25 @@
 import { pageElements } from "../utils/page-elements.js";
 
 export default class UserInfo {
-  constructor({ profileNameSelector, profileAboutSelector }) {
+  constructor(profileNameSelector, profileAboutSelector) {
     this._profileName = profileNameSelector;
     this._profileAbout = profileAboutSelector;
-    this.userInfo = {};
   }
 
   getUserInfo() {
-    this.userInfo["name"] = this._profileName;
-    this.userInfo["about"] = this._profileAbout;
+    const data = { name: this._profileName, about: this._profileAbout };
 
-    return userInfo;
+    return data;
   }
 
   setUserInfo(data) {
-    pageElements.PROFILE_NAME.textContent =
-      data["popup__input_type_profile-name"];
-    pageElements.PROFILE_ABOUT.textContent =
-      data["popup__input_type_profile-about"];
+    const name = data["popup__input_type_profile-name"];
+    const about = data["popup__input_type_profile-about"];
+
+    pageElements.PROFILE_NAME.textContent = name;
+    pageElements.PROFILE_ABOUT.textContent = about;
+
+    this._profileName = name;
+    this._profileAbout = about;
   }
 }

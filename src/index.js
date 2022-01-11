@@ -59,8 +59,7 @@ pageElements.EDIT_PROFILE_BUTTON.addEventListener("click", () => {
 
 // заполнение формы изменения профиля дефолтными значеними
 function setEditProfile() {
-  console.log(userInfo.getUserInfo);
-
-  // pageElements.PROFILE_NAME_INPUT.value = userInfo.getUserInfo["name"];
-  // pageElements.PROFILE_ABOUT_INPUT.value = userInfo.getUserInfo["about"];
+  const data = userInfo.getUserInfo();
+  pageElements.PROFILE_NAME_INPUT.value = data["name"];
+  pageElements.PROFILE_ABOUT_INPUT.value = data["about"];
 }
