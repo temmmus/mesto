@@ -1,13 +1,14 @@
-import Section from "../components/Section.js";
-import Card from "../components/Card.js";
-import PopupWithForm from "../components/PopupWithForm.js";
-import UserInfo from "../components/UserInfo.js";
-import { pageElements } from "../utils/page-elements.js";
+import "./styles/index.css";
+import Section from "./components/Section.js";
+import Card from "./components/Card.js";
+import PopupWithForm from "./components/PopupWithForm.js";
+import UserInfo from "./components/UserInfo.js";
+import { pageElements } from "./utils/page-elements.js";
 import {
   cardListSelector,
   cardTemplateSelector,
   initialCards,
-} from "../utils/constants.js";
+} from "./utils/constants.js";
 
 // создание дефолтных карточек
 const defaultCardList = new Section(

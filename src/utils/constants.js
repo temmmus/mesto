@@ -13,29 +13,39 @@ export const formConfig = {
   errorClass: "popup__input-error_active",
 };
 
+const dombay = new URL("../images/Домбай.jpg", import.meta.url);
+const elbrus = new URL("../images/Эльбрус.jpg", import.meta.url);
+const manpupuner = new URL("../images/Маньпупунёр.jpg", import.meta.url);
+const lakeTroitsk = new URL("../images/Озеро_Троицкое.jpg", import.meta.url);
+const vasyuganSwamp = new URL(
+  "../images/Васюганские_болота.jpg",
+  import.meta.url
+);
+const lakeElton = new URL("../images/Озеро_Эльтон.jpg", import.meta.url);
+
 export const initialCards = [
   {
     title: "Домбай",
-    link: "./images/Домбай.jpg",
+    link: dombay,
   },
   {
     title: "Гора Эльбрус",
-    link: "./images/Эльбрус.jpg",
+    link: elbrus,
   },
   {
     title: "Маньпупунёр",
-    link: "./images/Маньпупунёр.jpg",
+    link: manpupuner,
   },
   {
     title: "Озеро Троицкое",
-    link: "./images/Озеро_Троицкое.jpg",
+    link: lakeTroitsk,
   },
   {
     title: "Васюганские болота",
-    link: "./images/Васюганские_болота.jpg",
+    link: vasyuganSwamp,
   },
   {
     title: "Озеро Эльтон",
-    link: "./images/Озеро_Эльтон.jpg",
+    link: lakeElton,
   },
 ];

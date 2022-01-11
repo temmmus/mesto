@@ -4,20 +4,27 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="pages/index.css" />
-    <link rel="icon" type="image/svg" href="./images/favicon.png" />
+    <link
+      rel="icon"
+      type="image/svg"
+      href="<%=require('./images/favicon.png')%>"
+    />
     <title>Mesto</title>
   </head>
   <body class="common">
     <div class="page">
       <header class="header">
-        <img src="./images/header-logo.svg" alt="Лого" class="header__logo" />
+        <img
+          src="<%=require('./images/header-logo.svg')%>"
+          alt="Лого"
+          class="header__logo"
+        />
       </header>
 
       <main class="content">
         <section class="profile">
           <img
-            src="./images/Cousteau.jpg"
+            src="<%=require('./images/Cousteau.jpg')%>"
             alt="Аватар"
             class="profile__avatar"
           />
@@ -123,7 +130,5 @@
         </div>
       </li>
     </template>
-
-    <script type="module" src="./pages/index.js"></script>
   </body>
 </html>
