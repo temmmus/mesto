@@ -5,9 +5,14 @@ export default class Section {
     this._container = document.querySelector(containerSelector);
   }
 
-  // добавление DOM-элемента в контейнер
-  addItem(element) {
-    this._container.append(element);
+  // добавление DOM-элемента в конец контейнера
+  addItemAppend(item) {
+    this._container.append(item);
+  }
+
+  // добавление DOM-элемента в начало контейнера
+  addItemPrepend(item) {
+    this._container.prepend(item);
   }
 
   // отрисовка всех элементов

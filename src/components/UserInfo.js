@@ -1,25 +1,22 @@
-import { pageElements } from "../utils/page-elements.js";
-
 export default class UserInfo {
   constructor(profileNameSelector, profileAboutSelector) {
-    this._profileName = profileNameSelector;
-    this._profileAbout = profileAboutSelector;
+    this._profileName = document.querySelector(profileNameSelector).textContent;
+    this._profileAbout =
+      document.querySelector(profileAboutSelector).textContent;
+    this.userInfo = {};
   }
 
+  //
   getUserInfo() {
-    const data = { name: this._profileName, about: this._profileAbout };
+    this.userInfo["name"] = this._profileName;
+    this.userInfo["about"] = this._profileAbout;
 
-    return data;
+    return this.userInfo;
   }
 
+  // добавление новых данных на страницу
   setUserInfo(data) {
-    const name = data["popup__input_type_profile-name"];
-    const about = data["popup__input_type_profile-about"];
-
-    pageElements.PROFILE_NAME.textContent = name;
-    pageElements.PROFILE_ABOUT.textContent = about;
-
-    this._profileName = name;
-    this._profileAbout = about;
+    this.userInfo["name"] = data["popup__input_type_profile-name"];
+    this.userInfo["about"] = data["popup__input_type_profile-about"];
   }
 }

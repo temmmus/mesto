@@ -1,8 +1,11 @@
-export const popupOpenedSelector = "popup_opened";
-export const popupWithImageSelector = ".popup_type_add-card";
+export const popupAddImageSelector = ".popup_type_add-card";
+export const popupEditProfileSelector = ".popup_type_edit-profile";
+export const popupCardPreviewSelector = ".popup_type_view-image";
 export const cardListSelector = ".places";
 export const cardTemplateSelector = "place-template";
 export const cardSelector = ".place";
+export const profileNameSelector = ".profile__name";
+export const profileAboutSelector = ".profile__about";
 
 export const formConfig = {
   formSelector: ".popup__form",
