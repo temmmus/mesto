@@ -79,6 +79,7 @@ popupAddCard.setEventListeners();
 // добавление слушателя кнопке открытия попапа создания карточек
 pageElements.ADD_CARD_BUTTON.addEventListener("click", () => {
   popupAddCard.open();
+  formValidators[popupAddCard.popupForm.getAttribute("name")].resetValidation(); // сбросить валидацию
 });
 
 // сохранение текущих данных профиля
@@ -95,6 +96,7 @@ popupEditProfile.setEventListeners();
 // добавление слушателя кнопки открытия попапа профиля
 pageElements.EDIT_PROFILE_BUTTON.addEventListener("click", () => {
   popupEditProfile.open();
+  formValidators[popupAddCard.popupForm.getAttribute("name")].resetValidation(); // сбросить валидацию
   setEditProfile(); // заполнить поля формы
 });
 

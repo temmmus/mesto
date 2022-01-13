@@ -5,7 +5,7 @@ export default class extends Popup {
     super(popupSelector);
     this._formSubmit = formSubmit;
     this._formConfig = formConfig;
-    this._popupForm = this._popup.querySelector(this._formConfig.formSelector);
+    this.popupForm = this._popup.querySelector(this._formConfig.formSelector);
     this._inputList = Array.from(
       this._popup.querySelectorAll(this._formConfig.inputSelector)
     );
@@ -24,13 +24,6 @@ export default class extends Popup {
   close() {
     super.close();
     this._popup.querySelector(this._formConfig.formSelector).reset(); // очистить поля формы
-    this._resetValidation();
-  }
-
-  _resetValidation() {
-    this._validator.resetValidation();
-    // formValidators[profileForm.getAttribute("name")].resetValidation();
-    // formValidators[addCardForm.getAttribute("name")].resetValidation();
   }
 
   _handleFormSubmit(event) {
