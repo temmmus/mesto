@@ -19,7 +19,6 @@ export default class UserInfo {
 
   // добавление новых данных на страницу
   setUserInfo(data) {
-    console.log("это в классе ", data);
     document.querySelector(this._profileNameSelector).textContent =
       data["popup__input_type_profile-name"];
     document.querySelector(this._profileAboutSelector).textContent =

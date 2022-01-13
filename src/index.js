@@ -87,7 +87,6 @@ pageElements.ADD_CARD_BUTTON.addEventListener("click", () => {
 
 // сохранение текущих данных профиля
 const userInfo = new UserInfo(profileNameSelector, profileAboutSelector);
-console.log(userInfo);
 
 // создание попапа профиля
 const popupEditProfile = new PopupWithForm(
