@@ -20,9 +20,12 @@ import {
 
 // создание карточки
 function createCard(item) {
+  const title = Object.values(item)[0];
+  const link = Object.values(item)[1];
+
   const cardElement = new Card(
-    item.title,
-    item.link,
+    title,
+    link,
     cardTemplateSelector,
     (title, link) => {
       createPreview(popupCardPreviewSelector, title, link);
@@ -84,11 +87,16 @@ pageElements.ADD_CARD_BUTTON.addEventListener("click", () => {
 
 // сохранение текущих данных профиля
 const userInfo = new UserInfo(profileNameSelector, profileAboutSelector);
+console.log(userInfo);
 
 // создание попапа профиля
-const popupEditProfile = new PopupWithForm(popupEditProfileSelector, (data) => {
-  userInfo.setUserInfo(data);
-});
+const popupEditProfile = new PopupWithForm(
+  popupEditProfileSelector,
+  formConfig,
+  (data) => {
+    userInfo.setUserInfo(data);
+  }
+);
 
 // добавление слушателей попапу профиля
 popupEditProfile.setEventListeners();
