@@ -10,8 +10,7 @@ export default class Popup {
   }
 
   close() {
-    this._popup.removeEventListener("click", this.setEventListeners); // удалить обработчик нажатия на оверлей
-    window.removeEventListener("keydown", this._handleEscClose); // удалить обработчик закрытия по Esc
+    document.removeEventListener("keydown", this._handleEscClose); // удалить обработчик закрытия по Esc
     this._popup.classList.remove("popup_opened"); // удалить класс открытого состояния попапа
   }
 

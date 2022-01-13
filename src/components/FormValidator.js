@@ -46,18 +46,18 @@ export default class FormValidator {
 
   // отключение/включение кнопки сохранить
   _toggleButtonState(inputList, buttonElement, config) {
-    if (this._hasInvalidInput(inputList)) {
-      buttonElement.classList.add(config.inactiveButtonClass);
-      buttonElement.setAttribute("disabled", true);
+    if (this._hasInvalidInput(this._inputList)) {
+      this._buttonElement.classList.add(this._config.inactiveButtonClass);
+      this._buttonElement.setAttribute("disabled", true);
     } else {
-      buttonElement.classList.remove(config.inactiveButtonClass);
-      buttonElement.removeAttribute("disabled", "");
+      this._buttonElement.classList.remove(this._config.inactiveButtonClass);
+      this._buttonElement.removeAttribute("disabled", "");
     }
   }
 
   // добавление слушателей
   _setEventListeners() {
-    this._toggleButtonState(this._inputList, this._buttonElement, this._config);
+    this._toggleButtonState();
     this._inputList.forEach((inputElement) => {
       inputElement.addEventListener("input", () => {
         this._checkInputValidity(inputElement);
@@ -72,7 +72,7 @@ export default class FormValidator {
 
   // сброс валидации
   resetValidation() {
-    this._toggleButtonState(this._inputList, this._buttonElement, this._config);
+    this._toggleButtonState();
     this._inputList.forEach((inputElement) => {
       this._hideInputError(inputElement);
     });

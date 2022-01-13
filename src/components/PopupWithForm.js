@@ -23,7 +23,7 @@ export default class extends Popup {
 
   close() {
     super.close();
-    this._popup.querySelector(this._formConfig.formSelector).reset(); // очистить поля формы
+    this.popupForm.reset(); // очистить поля формы
   }
 
   _handleFormSubmit(event) {
@@ -36,6 +36,9 @@ export default class extends Popup {
   setEventListeners() {
     super.setEventListeners();
 
-    this._popup.addEventListener("submit", this._handleFormSubmit.bind(this));
+    this.popupForm.addEventListener(
+      "submit",
+      this._handleFormSubmit.bind(this)
+    );
   }
 }

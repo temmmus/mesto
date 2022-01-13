@@ -1,11 +1,11 @@
-import "./pages/index.css";
-import Card from "./components/Card.js";
-import Section from "./components/Section.js";
-import PopupWithForm from "./components/PopupWithForm.js";
-import PopupWithImage from "./components/PopupWithImage.js";
-import FormValidator from "./components/FormValidator.js";
-import UserInfo from "./components/UserInfo.js";
-import { pageElements } from "./utils/page-elements.js";
+import "./index.css";
+import Card from "../components/Card.js";
+import Section from "../components/Section.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithImage from "../components/PopupWithImage.js";
+import FormValidator from "../components/FormValidator.js";
+import UserInfo from "../components/UserInfo.js";
+import { pageElements } from "../utils/page-elements.js";
 import {
   cardListSelector,
   cardTemplateSelector,
@@ -16,29 +16,24 @@ import {
   popupAddImageSelector,
   popupEditProfileSelector,
   formConfig,
-} from "./utils/constants.js";
+} from "../utils/constants.js";
 
 // создание карточки
 function createCard(item) {
-  const title = Object.values(item)[0];
-  const link = Object.values(item)[1];
-
   const cardElement = new Card(
-    title,
-    link,
+    item.title,
+    item.link,
     cardTemplateSelector,
     (title, link) => {
-      createPreview(popupCardPreviewSelector, title, link);
+      openPreview(title, link);
     }
   ).generateCard();
   return cardElement;
 }
 
 // открытие попапа-превью карточки
-function createPreview(template, title, link) {
-  const popupCardPreview = new PopupWithImage(template, title, link);
-  popupCardPreview.setEventListeners();
-  popupCardPreview.open(title, link);
+function openPreview(title, link) {
+  popupCardImagePreview.open(title, link);
 }
 
 // добавление дефолтных карточек на страницу
@@ -52,6 +47,12 @@ const defaultCardList = new Section(
   cardListSelector
 );
 defaultCardList.renderItems();
+
+//  создание попапа превью карточки
+const popupCardImagePreview = new PopupWithImage(popupCardPreviewSelector);
+
+// добавление слушателей попапу создания карточек
+popupCardImagePreview.setEventListeners();
 
 // Включение валидации формы
 const formValidators = {};
@@ -110,6 +111,7 @@ pageElements.EDIT_PROFILE_BUTTON.addEventListener("click", () => {
 // заполнение формы изменения профиля дефолтными значеними
 function setEditProfile() {
   const data = userInfo.getUserInfo();
+  console.log(data)
   pageElements.PROFILE_NAME_INPUT.value = data["name"];
   pageElements.PROFILE_ABOUT_INPUT.value = data["about"];
 }
