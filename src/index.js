@@ -3,6 +3,7 @@ import Card from "./components/Card.js";
 import Section from "./components/Section.js";
 import PopupWithForm from "./components/PopupWithForm.js";
 import PopupWithImage from "./components/PopupWithImage.js";
+import FormValidator from "./components/FormValidator.js";
 import UserInfo from "./components/UserInfo.js";
 import { pageElements } from "./utils/page-elements.js";
 import {
@@ -14,6 +15,7 @@ import {
   popupCardPreviewSelector,
   popupAddImageSelector,
   popupEditProfileSelector,
+  formConfig,
 } from "./utils/constants.js";
 
 // создание карточки
@@ -23,18 +25,17 @@ function createCard(item) {
     item.link,
     cardTemplateSelector,
     (title, link) => {
-      const imagePreview = createPreview(popupCardPreviewSelector, title, link);
-      imagePreview.setEventListeners();
-      imagePreview.open();
+      createPreview(popupCardPreviewSelector, title, link);
     }
   ).generateCard();
   return cardElement;
 }
 
-// создание попапа-превью карточки
+// открытие попапа-превью карточки
 function createPreview(template, title, link) {
   const popupCardPreview = new PopupWithImage(template, title, link);
-  return popupCardPreview;
+  popupCardPreview.setEventListeners();
+  popupCardPreview.open(title, link);
 }
 
 // добавление дефолтных карточек на страницу
@@ -49,10 +50,28 @@ const defaultCardList = new Section(
 );
 defaultCardList.renderItems();
 
+// Включение валидации формы
+const formValidators = {};
+function enableValidation(config) {
+  const formList = Array.from(document.querySelectorAll(config.formSelector));
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(formElement, config);
+    const formName = formElement.getAttribute("name");
+
+    formValidators[formName] = validator;
+    validator.enableValidation();
+  });
+}
+enableValidation(formConfig);
+
 // создание попапа добавления карточек
-const popupAddCard = new PopupWithForm(popupAddImageSelector, (item) => {
-  defaultCardList.addItemPrepend(createCard(item));
-});
+const popupAddCard = new PopupWithForm(
+  popupAddImageSelector,
+  formConfig,
+  (item) => {
+    defaultCardList.addItemPrepend(createCard(item));
+  }
+);
 
 // добавление слушателей попапу создания карточек
 popupAddCard.setEventListeners();
@@ -68,7 +87,6 @@ const userInfo = new UserInfo(profileNameSelector, profileAboutSelector);
 // создание попапа профиля
 const popupEditProfile = new PopupWithForm(popupEditProfileSelector, (data) => {
   userInfo.setUserInfo(data);
-  console.log(data);
 });
 
 // добавление слушателей попапу профиля

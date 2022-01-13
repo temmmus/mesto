@@ -1,7 +1,7 @@
 export default class FormValidator {
-  constructor(config, element) {
-    this._config = config;
+  constructor(element, config) {
     this._element = element;
+    this._config = config;
     this._inputList = Array.from(
       this._element.querySelectorAll(this._config.inputSelector)
     );
