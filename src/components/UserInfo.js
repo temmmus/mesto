@@ -1,22 +1,28 @@
 export default class UserInfo {
   constructor(profileNameSelector, profileAboutSelector) {
-    this._profileName = document.querySelector(profileNameSelector).textContent;
-    this._profileAbout =
-      document.querySelector(profileAboutSelector).textContent;
+    this._profileNameSelector = profileNameSelector;
+    this._profileAboutSelector = profileAboutSelector;
     this.userInfo = {};
   }
 
   //
   getUserInfo() {
-    this.userInfo["name"] = this._profileName;
-    this.userInfo["about"] = this._profileAbout;
+    this.userInfo["name"] = document.querySelector(
+      this._profileNameSelector
+    ).textContent;
+    this.userInfo["about"] = document.querySelector(
+      this._profileAboutSelector
+    ).textContent;
 
     return this.userInfo;
   }
 
   // добавление новых данных на страницу
   setUserInfo(data) {
-    this.userInfo["name"] = data["popup__input_type_profile-name"];
-    this.userInfo["about"] = data["popup__input_type_profile-about"];
+    console.log("это в классе ", data);
+    document.querySelector(this._profileNameSelector).textContent =
+      data["popup__input_type_profile-name"];
+    document.querySelector(this._profileAboutSelector).textContent =
+      data["popup__input_type_profile-about"];
   }
 }
