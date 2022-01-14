@@ -15,7 +15,7 @@ export default class UserInfo {
 
   // добавление новых данных на страницу
   setUserInfo(data) {
-    this._name.textContent = data["popup__input_type_profile-name"];
-    this._about.textContent = data["popup__input_type_profile-about"];
+    this._name.textContent = data["name"];
+    this._about.textContent = data["about"];
   }
 }
