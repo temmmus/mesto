@@ -22,6 +22,15 @@ import {
   authToken,
 } from "../utils/constants.js";
 
+//
+const api = new Api({
+  baseUrl: baseUrl,
+  headers: {
+    authorization: authToken,
+    "Content-Type": "application/json",
+  },
+});
+
 // создание карточки
 function createCard(item) {
   const cardElement = new Card(
@@ -43,7 +52,7 @@ function openPreview(title, link) {
 // добавление дефолтных карточек на страницу
 const defaultCardList = new Section(
   {
-    items: initialCards,
+    items: api.getCards(),
     renderer: (item) => {
       defaultCardList.addItemAppend(createCard(item));
     },
@@ -117,15 +126,6 @@ function setEditProfile() {
   pageElements.PROFILE_NAME_INPUT.value = data["name"];
   pageElements.PROFILE_ABOUT_INPUT.value = data["about"];
 }
-
-//
-const api = new Api({
-  baseUrl: baseUrl,
-  headers: {
-    authorization: authToken,
-    "Content-Type": "application/json",
-  },
-});
 
 // загрузка данныех профиля на страницу
 function setUserInfoFromServerOnPage() {
