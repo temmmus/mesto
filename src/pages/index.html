@@ -76,6 +76,26 @@
       </div>
     </div>
 
+    <div class="popup popup_type_edit-avatar">
+      <div class="popup__container popup__container_type_form">
+        <button type="button" class="popup__close-button"></button>
+        <h2 class="popup__header">Обновить аватар</h2>
+        <form name="avatar" class="popup__form" novalidate>
+          <input
+            type="url"
+            name="link"
+            placeholder="Ссылка на картинку"
+            class="popup__input popup__input_type_place-image-link"
+            required
+          />
+          <span
+            class="popup__input-error popup__input-error_type_place-image-link"
+          ></span>
+          <button type="submit" class="popup__save-button">Сохранить</button>
+        </form>
+      </div>
+    </div>
+
     <div class="popup popup_type_add-card">
       <div class="popup__container popup__container_type_form">
         <button type="button" class="popup__close-button"></button>
@@ -83,7 +103,7 @@
         <form name="place" class="popup__form" novalidate>
           <input
             type="text"
-            name="title"
+            name="name"
             placeholder="Название"
             class="popup__input popup__input_type_place-name"
             minlength="2"
@@ -116,6 +136,22 @@
       </div>
     </div>
 
+    <div class="popup popup_type_delete-card">
+      <div class="popup__container popup__container_type_form">
+        <button type="button" class="popup__close-button"></button>
+        <h2 class="popup__header">Вы уверены?</h2>
+        <form name="delete" class="popup__form" novalidate>
+          <input
+            type="hidden"
+            name="cardId"
+            class="popup__input popup__input_type_card-id"
+            required
+          />
+          <button type="submit" class="popup__save-button">Да</button>
+        </form>
+      </div>
+    </div>
+
     <template id="place-template">
       <li class="place">
         <img class="place__image" />
@@ -123,6 +159,7 @@
         <div class="place__wrapper">
           <h2 class="place__title"></h2>
           <button type="button" class="place__like-button"></button>
+          <p class="place__like-count">99</p>
         </div>
       </li>
     </template>

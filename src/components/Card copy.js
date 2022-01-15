@@ -1,23 +1,20 @@
 export default class Card {
   constructor(
-    {
-      data,
-      handleCardClick,
-      handleDeleteClick,
-      handleAddLike,
-      handleDeleteLike,
-    },
-    templateSelector
+    id,
+    name,
+    link,
+    likeCount,
+    templateSelector,
+    handleCardClick,
+    handleDeleteClick
   ) {
-    this._id = data._id;
-    this._name = data.name;
-    this._link = data.link;
-    this._likeCount = data.likes.length;
+    this._id = id;
+    this._name = name;
+    this._link = link;
+    this._likeCount = likeCount.length;
+    this._template = document.getElementById(templateSelector);
     this._handleCardClick = handleCardClick;
     this._handleDeleteClick = handleDeleteClick;
-    this._handleAddLike = handleAddLike;
-    this._handleDeleteLike = handleDeleteLike;
-    this._template = document.getElementById(templateSelector);
   }
 
   // получение шаблона
@@ -37,12 +34,10 @@ export default class Card {
     //     .closest(".place__like-button")
     //     .classList.toggle("place__like-button_active");
     // });
-    this._cardLikeButton.addEventListener("click", () => {
-      this._cardLikeButton.classList.contains("place__like-button_active")
-        ? (this._handleDeleteLike(this._id),
-          this._cardLikeButton.classList.remove("place__like-button_active"))
-        : (this._handleAddLike(this._id),
-          this._cardLikeButton.classList.add("place__like-button_active"));
+    this._cardLikeButton.addEventListener("click", (event) => {
+      event.target
+        .closest(".place__like-button")
+        .classList.toggle("place__like-button_active");
     });
 
     // открытие попапа удаления карточки

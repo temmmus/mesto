@@ -10,13 +10,14 @@ import { pageElements } from "../utils/page-elements.js";
 import {
   cardListSelector,
   cardTemplateSelector,
-  initialCards,
   profileNameSelector,
   profileAboutSelector,
   profileAvatarSelector,
   popupCardPreviewSelector,
-  popupAddImageSelector,
+  popupAddCardSelector,
+  popupDeleteCardSelector,
   popupEditProfileSelector,
+  popupEditAvatarSelector,
   formConfig,
   baseUrl,
   authToken,
@@ -31,43 +32,72 @@ const api = new Api({
   },
 });
 
-// создание карточки
+console.log(api.getCards()); /////////////////////////////////////////
+// создание элемента карточки
 function createCard(item) {
   const cardElement = new Card(
-    item.title,
-    item.link,
-    cardTemplateSelector,
-    (title, link) => {
-      openPreview(title, link);
-    }
+    {
+      data: item,
+      handleCardClick: (name, link) => {
+        openPreview(name, link);
+      },
+      handleDeleteClick: (cardId) => {
+        openDeletePreview(cardId);
+      },
+      // handleLikeClick: (cardId) => {
+      //   api.addLikeCard(cardId);
+      // },
+      handleAddLike: (cardId) => {
+        api.addLikeCard(cardId);
+      },
+      handleDeleteLike: (cardId) => {
+        api.deleteLikeCard(cardId);
+      },
+    },
+
+    cardTemplateSelector
   ).generateCard();
   return cardElement;
 }
 
 // открытие попапа-превью карточки
-function openPreview(title, link) {
-  popupCardImagePreview.open(title, link);
+function openPreview(name, link) {
+  popupCardImagePreview.open(name, link);
+}
+// открытие попапа удаления карточки
+function openDeletePreview(cardId) {
+  pageElements.CARD_ID_INPUT.value = cardId;
+  popupDeleteCard.open();
 }
 
 // добавление дефолтных карточек на страницу
-const defaultCardList = new Section(
+const getCardList = new Section(
   {
-    items: api.getCards(),
+    items: api.getCards(), // получение карточек с сервера
     renderer: (item) => {
-      defaultCardList.addItemAppend(createCard(item));
+      getCardList.addItemAppend(createCard(item));
     },
   },
   cardListSelector
 );
-defaultCardList.renderItems();
+getCardList.renderItems();
 
 //  создание попапа превью карточки
 const popupCardImagePreview = new PopupWithImage(popupCardPreviewSelector);
+//  создание попапа удаления карточки
+const popupDeleteCard = new PopupWithForm(
+  popupDeleteCardSelector,
+  formConfig,
+  (data) => {
+    api.deleteCard(data.cardId); // удалить карточку на сервере
+  }
+);
 
 // добавление слушателей попапу создания карточек
 popupCardImagePreview.setEventListeners();
+popupDeleteCard.setEventListeners();
 
-// Включение валидации формы
+// Включение валидации всех форм
 const formValidators = {};
 function enableValidation(config) {
   const formList = Array.from(document.querySelectorAll(config.formSelector));
@@ -83,10 +113,12 @@ enableValidation(formConfig);
 
 // создание попапа добавления карточек
 const popupAddCard = new PopupWithForm(
-  popupAddImageSelector,
+  popupAddCardSelector,
   formConfig,
   (item) => {
-    defaultCardList.addItemPrepend(createCard(item));
+    api.postNewCard(item.name, item.link); // создать новую карточку на сервере
+    // getCardList.renderItems();
+    // getCardList.addItemPrepend(createCard(item));
   }
 );
 
@@ -99,18 +131,33 @@ pageElements.ADD_CARD_BUTTON.addEventListener("click", () => {
   formValidators[popupAddCard.popupForm.getAttribute("name")].resetValidation(); // сбросить валидацию
 });
 
-// создание попапа профиля
+// создание попапа изменения профиля
 const popupEditProfile = new PopupWithForm(
   popupEditProfileSelector,
   formConfig,
   (data) => {
-    api.patchUserInfo(data.name, data.about);
+    api.patchUserInfo(data.name, data.about); // обновление данных пользователя на сервер
     userInfo.setUserInfo(data);
   }
 );
-
-// добавление слушателей попапу профиля
+// добавление слушателей попапу изменения профиля
 popupEditProfile.setEventListeners();
+
+// создание попапа изменения аватара
+const popupEditAvatar = new PopupWithForm(
+  popupEditAvatarSelector,
+  formConfig,
+  (data) => {
+    api.patchUserAvatar(data.link); // обновление аватара пользователя на сервер
+  }
+);
+// добавление слушателей попапу изменения аватара
+popupEditAvatar.setEventListeners();
+
+// добавление слушателей элементу аватара
+pageElements.PROFILE_AVATAR.addEventListener("click", () => {
+  popupEditAvatar.open();
+});
 
 // добавление слушателя кнопки открытия попапа профиля
 pageElements.EDIT_PROFILE_BUTTON.addEventListener("click", () => {

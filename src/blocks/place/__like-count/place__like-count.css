@@ -1,0 +1,11 @@
+.place__like-count {
+  margin: 0;
+  /* outline: 1px dashed green; */
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 16px;
+  /* text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden; */
+}
