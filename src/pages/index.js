@@ -5,6 +5,7 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import FormValidator from "../components/FormValidator.js";
 import UserInfo from "../components/UserInfo.js";
+import Api from "../components/Api.js";
 import { pageElements } from "../utils/page-elements.js";
 import {
   cardListSelector,
@@ -12,10 +13,13 @@ import {
   initialCards,
   profileNameSelector,
   profileAboutSelector,
+  profileAvatarSelector,
   popupCardPreviewSelector,
   popupAddImageSelector,
   popupEditProfileSelector,
   formConfig,
+  baseUrl,
+  authToken,
 } from "../utils/constants.js";
 
 // создание карточки
@@ -86,14 +90,12 @@ pageElements.ADD_CARD_BUTTON.addEventListener("click", () => {
   formValidators[popupAddCard.popupForm.getAttribute("name")].resetValidation(); // сбросить валидацию
 });
 
-// сохранение текущих данных профиля
-const userInfo = new UserInfo(profileNameSelector, profileAboutSelector);
-
 // создание попапа профиля
 const popupEditProfile = new PopupWithForm(
   popupEditProfileSelector,
   formConfig,
   (data) => {
+    api.patchUserInfo(data.name, data.about);
     userInfo.setUserInfo(data);
   }
 );
@@ -111,6 +113,29 @@ pageElements.EDIT_PROFILE_BUTTON.addEventListener("click", () => {
 // заполнение формы изменения профиля дефолтными значеними
 function setEditProfile() {
   const data = userInfo.getUserInfo();
+
   pageElements.PROFILE_NAME_INPUT.value = data["name"];
   pageElements.PROFILE_ABOUT_INPUT.value = data["about"];
 }
+
+//
+const api = new Api({
+  baseUrl: baseUrl,
+  headers: {
+    authorization: authToken,
+    "Content-Type": "application/json",
+  },
+});
+
+// загрузка данныех профиля на страницу
+function setUserInfoFromServerOnPage() {
+  api.getUserInfo().then((res) => {
+    document.querySelector(profileNameSelector).textContent = res.name;
+    document.querySelector(profileAboutSelector).textContent = res.about;
+    document.querySelector(profileAvatarSelector).src = res.avatar;
+  });
+}
+setUserInfoFromServerOnPage();
+
+// сохранение текущих данных профиля
+const userInfo = new UserInfo(profileNameSelector, profileAboutSelector);
