@@ -21,6 +21,7 @@ import {
   formConfig,
   baseUrl,
   authToken,
+  userId,
 } from "../utils/constants.js";
 
 //
@@ -54,7 +55,8 @@ function createCard(item) {
       },
     },
 
-    cardTemplateSelector
+    cardTemplateSelector,
+    userId
   ).generateCard();
   return cardElement;
 }
@@ -70,16 +72,16 @@ function openDeletePreview(cardId) {
 }
 
 // добавление на страницу карточек с сервера
-const getCardList = new Section(
+const getInitialCardList = new Section(
   {
     items: api.getCards(), // получение карточек с сервера
     renderer: (item) => {
-      getCardList.addItemAppend(createCard(item));
+      getInitialCardList.addItemAppend(createCard(item));
     },
   },
   cardListSelector
 );
-getCardList.renderItems();
+getInitialCardList.renderItems();
 
 //  создание попапа превью карточки
 const popupCardImagePreview = new PopupWithImage(popupCardPreviewSelector);
@@ -88,7 +90,10 @@ const popupDeleteCard = new PopupWithForm(
   popupDeleteCardSelector,
   formConfig,
   (data) => {
-    api.deleteCard(data.cardId).then(() => popupDeleteCard.close()); // удалить карточку на сервере
+    api.deleteCard(data.cardId).then(() => {
+      getInitialCardList.renderItems();
+      popupDeleteCard.close();
+    }); // удалить карточку на сервере
   }
 );
 
@@ -116,7 +121,7 @@ const popupAddCard = new PopupWithForm(
   formConfig,
   (item) => {
     api.postNewCard(item.name, item.link).then((res) => {
-      getCardList.addItemPrepend(createCard(res));
+      getInitialCardList.addItemPrepend(createCard(res));
       popupAddCard.close();
     }); // создать новую карточку на сервере
   }

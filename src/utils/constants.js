@@ -11,6 +11,7 @@ export const profileAboutSelector = ".profile__about";
 export const profileAvatarSelector = ".profile__avatar";
 export const baseUrl = "https://mesto.nomoreparties.co/v1/cohort-33";
 export const authToken = "62b19013-c791-48d0-84cf-12391364b61d";
+export const userId = "306de15736b8ef6757648f3a";
 
 export const formConfig = {
   formSelector: ".popup__form",

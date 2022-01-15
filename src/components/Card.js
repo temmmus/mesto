@@ -7,9 +7,12 @@ export default class Card {
       handleAddLike,
       handleDeleteLike,
     },
-    templateSelector
+    templateSelector,
+    userId
   ) {
     this._id = data._id;
+    this._userId = userId;
+    this.ownerId = data.owner._id;
     this._name = data.name;
     this._link = data.link;
     this._likeCount = data.likes.length;
@@ -56,9 +59,9 @@ export default class Card {
     });
 
     // удаление карточки
-    // this._cardRemoveButton.addEventListener("click", (event) => {
-    //   event.target.closest(".place").remove();
-    // });
+    this._cardRemoveButton.addEventListener("click", (event) => {
+      event.target.closest(".place").remove();
+    });
   }
 
   // создание карточки
@@ -71,6 +74,9 @@ export default class Card {
     this._cardRemoveButton = this._element.querySelector(
       ".place__remove-button"
     );
+    if (this.ownerId != this._userId) {
+      this._cardRemoveButton.style.display = "none";
+    }
 
     this._setEventListeners(); // добавляем слушатели
 
