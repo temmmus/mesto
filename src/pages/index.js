@@ -155,7 +155,7 @@ const popupEditAvatar = new PopupWithForm(
 popupEditAvatar.setEventListeners();
 
 // добавление слушателей элементу аватара
-pageElements.PROFILE_AVATAR.addEventListener("click", () => {
+pageElements.EDIT_AVATAR_BUTTON.addEventListener("click", () => {
   popupEditAvatar.open();
 });
 
