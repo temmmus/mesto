@@ -5,6 +5,9 @@ export default class extends Popup {
     super(popupSelector);
     this._formConfig = formConfig;
     this._formSubmit = formSubmit;
+    this._submitButton = this._popup.querySelector(
+      this._formConfig.submitButtonSelector
+    );
     this.popupForm = this._popup.querySelector(this._formConfig.formSelector);
     this._inputList = Array.from(
       this._popup.querySelectorAll(this._formConfig.inputSelector)
@@ -23,13 +26,14 @@ export default class extends Popup {
 
   close() {
     super.close();
+    this._submitButton.textContent = "Сохранить";
     this.popupForm.reset(); // очистить поля формы
   }
 
   _handleFormSubmit(event) {
     const data = this._getInputValues();
+    this._submitButton.textContent = "Сохранение...";
     this._formSubmit(data);
-    this.close();
     event.preventDefault();
   }
 

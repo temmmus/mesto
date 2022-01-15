@@ -32,7 +32,6 @@ const api = new Api({
   },
 });
 
-console.log(api.getCards()); /////////////////////////////////////////
 // создание элемента карточки
 function createCard(item) {
   const cardElement = new Card(
@@ -70,7 +69,7 @@ function openDeletePreview(cardId) {
   popupDeleteCard.open();
 }
 
-// добавление дефолтных карточек на страницу
+// добавление на страницу карточек с сервера
 const getCardList = new Section(
   {
     items: api.getCards(), // получение карточек с сервера
@@ -89,7 +88,7 @@ const popupDeleteCard = new PopupWithForm(
   popupDeleteCardSelector,
   formConfig,
   (data) => {
-    api.deleteCard(data.cardId); // удалить карточку на сервере
+    api.deleteCard(data.cardId).then(() => popupDeleteCard.close()); // удалить карточку на сервере
   }
 );
 
@@ -116,9 +115,10 @@ const popupAddCard = new PopupWithForm(
   popupAddCardSelector,
   formConfig,
   (item) => {
-    api.postNewCard(item.name, item.link); // создать новую карточку на сервере
-    // getCardList.renderItems();
-    // getCardList.addItemPrepend(createCard(item));
+    api.postNewCard(item.name, item.link).then((res) => {
+      getCardList.addItemPrepend(createCard(res));
+      popupAddCard.close();
+    }); // создать новую карточку на сервере
   }
 );
 
@@ -136,8 +136,10 @@ const popupEditProfile = new PopupWithForm(
   popupEditProfileSelector,
   formConfig,
   (data) => {
-    api.patchUserInfo(data.name, data.about); // обновление данных пользователя на сервер
-    userInfo.setUserInfo(data);
+    api.patchUserInfo(data.name, data.about).then(() => {
+      userInfo.setUserInfo(data);
+      popupEditProfile.close();
+    }); // обновить даннык пользователя на сервере
   }
 );
 // добавление слушателей попапу изменения профиля
@@ -148,7 +150,10 @@ const popupEditAvatar = new PopupWithForm(
   popupEditAvatarSelector,
   formConfig,
   (data) => {
-    api.patchUserAvatar(data.link); // обновление аватара пользователя на сервер
+    api.patchUserAvatar(data.link).then(() => {
+      setUserInfoFromServerOnPage();
+      popupEditAvatar.close();
+    }); // обновление аватара пользователя на сервер
   }
 );
 // добавление слушателей попапу изменения аватара
@@ -185,4 +190,8 @@ function setUserInfoFromServerOnPage() {
 setUserInfoFromServerOnPage();
 
 // сохранение текущих данных профиля
-const userInfo = new UserInfo(profileNameSelector, profileAboutSelector);
+const userInfo = new UserInfo(profileNameSelector, profileAboutSelector, () => {
+  return api.getUserInfo().then((res) => {
+    return res._id;
+  });
+});

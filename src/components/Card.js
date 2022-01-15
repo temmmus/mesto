@@ -46,7 +46,7 @@ export default class Card {
     });
 
     // открытие попапа удаления карточки
-    this._cardRemoveButton.addEventListener("click", () => {
+    this._cardRemoveButton.addEventListener("click", (event) => {
       this._handleDeleteClick(this._id);
     });
 
