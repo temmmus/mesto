@@ -30,7 +30,6 @@ export default class Card {
     // лайк карточки
     this._cardLikeButton.addEventListener("click", () => {
       this._hendleLikeClick(this._id);
-      console.log("like");
     });
 
     // открытие попапа удаления карточки
@@ -76,8 +75,4 @@ export default class Card {
     return this._element;
   }
 
-  getLikesCount(cardId) {
-    console.log(this._likes.length);
-    return this._likes.length;
-  }
 }

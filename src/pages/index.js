@@ -30,13 +30,11 @@ let cardList;
 // получение/сохранение/отрисовка данных пользователя и карточек
 Promise.all([api.getUserInfo(), api.getCards()]).then(([userData, cards]) => {
   // установка данных пользователя
-  console.log(userData);
   userInfo.setUserInfo(userData); // сохранение данных пользовател
   userInfo.setUserInfoOnPage(pageSelectors); // отрисовка имени и профессии на странице
   userInfo.setUserAvatarOnPage(pageSelectors); // отрисовка аватара на странице
 
   // отрисовка карточек с сервера
-  console.log(cards);
   cardList = new Section(
     {
       items: cards,
@@ -78,7 +76,6 @@ function createCard(item) {
                 .getElementById(cardId)
                 .querySelector(".place__like-count").textContent =
                 res.likes.length;
-              console.log(res.likes.length);
             })
             .catch((err) => {
               console.log(err);
@@ -95,7 +92,6 @@ function createCard(item) {
                 .getElementById(cardId)
                 .querySelector(".place__like-count").textContent =
                 res.likes.length;
-              console.log(res.likes.length);
             })
             .catch((err) => {
               console.log(err);
@@ -108,7 +104,6 @@ function createCard(item) {
   ).generateCard();
   return cardElement;
 }
-console.log(userInfo.getUserInfo());
 
 //  создание попапа превью карточки
 const popupCardImagePreview = new PopupWithImage(
