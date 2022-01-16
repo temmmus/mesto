@@ -76,7 +76,8 @@ export default class Card {
     return this._element;
   }
 
-  // likeCountUpdate(count) {
-  //   this.likeCount = count;
-  // }
+  getLikesCount(cardId) {
+    console.log(this._likes.length);
+    return this._likes.length;
+  }
 }

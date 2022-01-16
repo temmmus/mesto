@@ -69,11 +69,16 @@ function createCard(item) {
         ) {
           api
             .deleteLikeCard(cardId)
-            .then(() => {
+            .then((res) => {
               document
                 .getElementById(cardId)
                 .querySelector(".place__like-button")
                 .classList.remove("place__like-button_active");
+              document
+                .getElementById(cardId)
+                .querySelector(".place__like-count").textContent =
+                res.likes.length;
+              console.log(res.likes.length);
             })
             .catch((err) => {
               console.log(err);
@@ -81,11 +86,16 @@ function createCard(item) {
         } else {
           api
             .addLikeCard(cardId)
-            .then(() => {
+            .then((res) => {
               document
                 .getElementById(cardId)
                 .querySelector(".place__like-button")
                 .classList.add("place__like-button_active");
+              document
+                .getElementById(cardId)
+                .querySelector(".place__like-count").textContent =
+                res.likes.length;
+              console.log(res.likes.length);
             })
             .catch((err) => {
               console.log(err);
