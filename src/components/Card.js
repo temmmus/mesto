@@ -2,9 +2,9 @@ export default class Card {
   constructor(
     { data, handleCardClick, handleDeleteClick, hendleLikeClick },
     templateSelector,
-    userId
+    userInfo
   ) {
-    this._currentUserId = userId;
+    this._currentUserId = userInfo._id;
     this._id = data._id;
     this.ownerId = data.owner._id;
     this._name = data.name;
@@ -74,5 +74,4 @@ export default class Card {
     // возвращаем элемент
     return this._element;
   }
-
 }
