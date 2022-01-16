@@ -60,28 +60,37 @@ function createCard(item) {
       handleDeleteClick: (cardId) => {
         openDeletePreview(cardId);
       },
-      handleAddLike: (cardId) => {
-        api
-          .addLikeCard(cardId)
-          .then((res) => {
-            return res.likes.length;
-          })
-          .catch((err) => {
-            console.log(err);
-          })
-          .finally(() => {});
-      },
-      handleDeleteLike: (cardId) => {
-        api
-          .deleteLikeCard(cardId)
-          .then((res) => {
-            return res.likes.length;
-            // console.log(res.likes.length);
-          })
-          .catch((err) => {
-            console.log(err);
-          })
-          .finally(() => {});
+      hendleLikeClick: (cardId) => {
+        if (
+          document
+            .getElementById(cardId)
+            .querySelector(".place__like-button")
+            .classList.contains("place__like-button_active")
+        ) {
+          api
+            .deleteLikeCard(cardId)
+            .then(() => {
+              document
+                .getElementById(cardId)
+                .querySelector(".place__like-button")
+                .classList.remove("place__like-button_active");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          api
+            .addLikeCard(cardId)
+            .then(() => {
+              document
+                .getElementById(cardId)
+                .querySelector(".place__like-button")
+                .classList.add("place__like-button_active");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
       },
     },
     pageSelectors.cardTemplate,
@@ -89,6 +98,7 @@ function createCard(item) {
   ).generateCard();
   return cardElement;
 }
+console.log(userInfo.getUserInfo());
 
 //  создание попапа превью карточки
 const popupCardImagePreview = new PopupWithImage(
