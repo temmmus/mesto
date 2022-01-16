@@ -25,29 +25,47 @@ const api = new Api({
 });
 
 const userInfo = new UserInfo();
-let cardList;
 
 // получение/сохранение/отрисовка данных пользователя и карточек
-Promise.all([api.getUserInfo(), api.getCards()]).then(([userData, cards]) => {
-  // установка данных пользователя
-  console.log(userData);
-  userInfo.setUserInfo(userData); // сохранение данных пользовател
-  userInfo.setUserInfoOnPage(pageSelectors); // отрисовка имени и профессии на странице
-  userInfo.setUserAvatarOnPage(pageSelectors); // отрисовка аватара на странице
+Promise.all([api.getUserInfo(), api.getCards()])
+  .then(([userData, cards]) => {
+    // установка данных пользователя
+    console.log(userData);
+    function setUserInfo() {
+      api
+        .getUserInfo()
+        .then((res) => {
+          userInfo.setUserInfo(res); // сохранение данных пользовател
+          userInfo.setUserInfoOnPage(pageSelectors); // отрисовка имени и профессии на странице
+          userInfo.setUserAvatarOnPage(pageSelectors); // отрисовка аватара на странице
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    setUserInfo();
 
-  // отрисовка карточек с сервера
-  console.log(cards);
-  cardList = new Section(
-    {
-      items: cards,
-      renderer: (item) => {
-        cardList.addItemAppend(createCard(item));
+    // отрисовка карточек
+    console.log(cards);
+    const getInitialCardList = new Section(
+      {
+        items: api
+          .getCards()
+          .catch((err) => {
+            console.log(err);
+          })
+          .finally(() => {}), // получение карточек с сервера
+        renderer: (item) => {
+          getInitialCardList.addItemAppend(createCard(item));
+        },
       },
-    },
-    pageSelectors.cardList
-  );
-  cardList.renderItems();
-});
+      pageSelectors.cardList
+    );
+    getInitialCardList.renderItems();
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 // создание элемента карточки
 function createCard(item) {
@@ -101,16 +119,15 @@ const popupDeleteCard = new PopupWithForm(
   formConfig,
   (data) => {
     api
-      .deleteCard(data.cardId) // удалить карточку на сервере
+      .deleteCard(data.cardId)
       .then(() => {
-        cardList.removeItem(data); // удалить карточку на странице
+        getInitialCardList.renderItems();
+        popupDeleteCard.close();
       })
       .catch((err) => {
         console.log(err);
       })
-      .finally(() => {
-        popupDeleteCard.close();
-      });
+      .finally(() => {}); // удалить карточку на сервере
   }
 );
 
@@ -149,14 +166,13 @@ const popupAddCard = new PopupWithForm(
     api
       .postNewCard(item.name, item.link)
       .then((res) => {
-        cardList.addItemPrepend(createCard(res)); // добавить новую карточку на странице
+        getInitialCardList.addItemPrepend(createCard(res));
+        popupAddCard.close();
       })
       .catch((err) => {
         console.log(err);
       })
-      .finally(() => {
-        popupAddCard.close();
-      });
+      .finally(() => {}); // создать новую карточку на сервере
   }
 );
 popupAddCard.setEventListeners(); // добавление слушателей попапу создания карточек
@@ -210,9 +226,6 @@ popupEditAvatar.setEventListeners(); // добавление слушателе�
 // добавление слушателей элементу аватара
 pageElements.EDIT_AVATAR_BUTTON.addEventListener("click", () => {
   popupEditAvatar.open();
-  formValidators[
-    popupEditAvatar.popupForm.getAttribute("name")
-  ].resetValidation(); // сбросить валидацию
 });
 
 // добавление слушателя кнопки открытия попапа профиля

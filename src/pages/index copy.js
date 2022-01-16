@@ -8,7 +8,16 @@ import UserInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js";
 import { pageElements } from "../utils/page-elements.js";
 import {
-  pageSelectors,
+  cardListSelector,
+  cardTemplateSelector,
+  profileNameSelector,
+  profileAboutSelector,
+  profileAvatarSelector,
+  popupCardPreviewSelector,
+  popupAddCardSelector,
+  popupDeleteCardSelector,
+  popupEditProfileSelector,
+  popupEditAvatarSelector,
   formConfig,
   baseUrl,
   authToken,
@@ -24,30 +33,15 @@ const api = new Api({
   },
 });
 
-const userInfo = new UserInfo();
-let cardList;
-
-// получение/сохранение/отрисовка данных пользователя и карточек
-Promise.all([api.getUserInfo(), api.getCards()]).then(([userData, cards]) => {
-  // установка данных пользователя
-  console.log(userData);
-  userInfo.setUserInfo(userData); // сохранение данных пользовател
-  userInfo.setUserInfoOnPage(pageSelectors); // отрисовка имени и профессии на странице
-  userInfo.setUserAvatarOnPage(pageSelectors); // отрисовка аватара на странице
-
-  // отрисовка карточек с сервера
-  console.log(cards);
-  cardList = new Section(
-    {
-      items: cards,
-      renderer: (item) => {
-        cardList.addItemAppend(createCard(item));
-      },
-    },
-    pageSelectors.cardList
-  );
-  cardList.renderItems();
-});
+// получение с сервера данных пользователя и карточек
+Promise.all([getUserInfo(), getCards()])
+  .then(([userData, cards]) => {
+    // тут установка данных пользователя
+    // и тут отрисовка карточек
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 // создание элемента карточки
 function createCard(item) {
@@ -84,48 +78,57 @@ function createCard(item) {
           .finally(() => {});
       },
     },
-    pageSelectors.cardTemplate,
+    cardTemplateSelector,
     userId
   ).generateCard();
   return cardElement;
 }
-
-//  создание попапа превью карточки
-const popupCardImagePreview = new PopupWithImage(
-  pageSelectors.popupCardPreview
-);
-
-//  создание попапа удаления карточки
-const popupDeleteCard = new PopupWithForm(
-  pageSelectors.popupDeleteCard,
-  formConfig,
-  (data) => {
-    api
-      .deleteCard(data.cardId) // удалить карточку на сервере
-      .then(() => {
-        cardList.removeItem(data); // удалить карточку на странице
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        popupDeleteCard.close();
-      });
-  }
-);
 
 // открытие попапа-превью карточки
 function openPreview(name, link) {
   popupCardImagePreview.open(name, link);
 }
 
-// открытие попапа удаления карточки
-function openDeletePreview(cardId) {
-  document.querySelector(pageSelectors.popupDeleteCardIdInput).value = cardId;
-  popupDeleteCard.open();
-}
-popupCardImagePreview.setEventListeners(); // добавление слушателей попапу превью карточек
-popupDeleteCard.setEventListeners(); // добавление слушателей попапу удаления карточек
+// добавление на страницу карточек с сервера
+const getInitialCardList = new Section(
+  {
+    items: api
+      .getCards()
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {}), // получение карточек с сервера
+    renderer: (item) => {
+      getInitialCardList.addItemAppend(createCard(item));
+    },
+  },
+  cardListSelector
+);
+getInitialCardList.renderItems();
+
+//  создание попапа превью карточки
+const popupCardImagePreview = new PopupWithImage(popupCardPreviewSelector);
+//  создание попапа удаления карточки
+const popupDeleteCard = new PopupWithForm(
+  popupDeleteCardSelector,
+  formConfig,
+  (data) => {
+    api
+      .deleteCard(data.cardId)
+      .then(() => {
+        getInitialCardList.renderItems();
+        popupDeleteCard.close();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {}); // удалить карточку на сервере
+  }
+);
+
+// добавление слушателей попапу создания карточек
+popupCardImagePreview.setEventListeners();
+popupDeleteCard.setEventListeners();
 
 // Включение валидации всех форм
 const formValidators = {};
@@ -143,23 +146,24 @@ enableValidation(formConfig);
 
 // создание попапа добавления карточек
 const popupAddCard = new PopupWithForm(
-  pageSelectors.popupAddCard,
+  popupAddCardSelector,
   formConfig,
   (item) => {
     api
       .postNewCard(item.name, item.link)
       .then((res) => {
-        cardList.addItemPrepend(createCard(res)); // добавить новую карточку на странице
+        getInitialCardList.addItemPrepend(createCard(res));
+        popupAddCard.close();
       })
       .catch((err) => {
         console.log(err);
       })
-      .finally(() => {
-        popupAddCard.close();
-      });
+      .finally(() => {}); // создать новую карточку на сервере
   }
 );
-popupAddCard.setEventListeners(); // добавление слушателей попапу создания карточек
+
+// добавление слушателей попапу создания карточек
+popupAddCard.setEventListeners();
 
 // добавление слушателя кнопке открытия попапа создания карточек
 pageElements.ADD_CARD_BUTTON.addEventListener("click", () => {
@@ -169,55 +173,87 @@ pageElements.ADD_CARD_BUTTON.addEventListener("click", () => {
 
 // создание попапа изменения профиля
 const popupEditProfile = new PopupWithForm(
-  pageSelectors.popupEditProfile,
+  popupEditProfileSelector,
   formConfig,
   (data) => {
     api
       .patchUserInfo(data.name, data.about)
       .then(() => {
-        userInfo.setUserInfo(data); // сохранение новых данных
+        userInfo.setUserInfo(data);
         popupEditProfile.close();
       })
       .catch((err) => {
         console.log(err);
       })
-      .finally(() => {
-        userInfo.setUserInfoOnPage(pageSelectors); // отрисовка новых данных на сервере
-      });
+      .finally(() => {}); // обновить даннык пользователя на сервере
   }
 );
-popupEditProfile.setEventListeners(); // добавление слушателей попапу изменения профиля
+// добавление слушателей попапу изменения профиля
+popupEditProfile.setEventListeners();
 
 // создание попапа изменения аватара
 const popupEditAvatar = new PopupWithForm(
-  pageSelectors.popupEditAvatar,
+  popupEditAvatarSelector,
   formConfig,
   (data) => {
     api
       .patchUserAvatar(data.link)
-      .then((res) => {
-        userInfo.setUserInfo(res); // сохранение новых данных
+      .then(() => {
+        setUserInfoFromServerOnPage();
         popupEditAvatar.close();
       })
       .catch((err) => {})
-      .finally(() => {
-        userInfo.setUserAvatarOnPage(pageSelectors); // отрисовка нового аватара на странице
-      });
+      .finally(() => {}); // обновление аватара пользователя на сервер
   }
 );
-popupEditAvatar.setEventListeners(); // добавление слушателей попапу изменения аватара
+// добавление слушателей попапу изменения аватара
+popupEditAvatar.setEventListeners();
 
 // добавление слушателей элементу аватара
 pageElements.EDIT_AVATAR_BUTTON.addEventListener("click", () => {
   popupEditAvatar.open();
-  formValidators[
-    popupEditAvatar.popupForm.getAttribute("name")
-  ].resetValidation(); // сбросить валидацию
 });
 
 // добавление слушателя кнопки открытия попапа профиля
 pageElements.EDIT_PROFILE_BUTTON.addEventListener("click", () => {
-  userInfo.setUserInfoInForm(pageSelectors); // заполнение полей формы
-  popupEditProfile.open(); // открытие формы
+  popupEditProfile.open();
   formValidators[popupAddCard.popupForm.getAttribute("name")].resetValidation(); // сбросить валидацию
+  setEditProfile(); // заполнить поля формы
+});
+
+// заполнение формы изменения профиля дефолтными значеними
+function setEditProfile() {
+  const data = userInfo.getUserInfo();
+
+  pageElements.PROFILE_NAME_INPUT.value = data["name"];
+  pageElements.PROFILE_ABOUT_INPUT.value = data["about"];
+}
+
+// загрузка данныех профиля на страницу
+function setUserInfoFromServerOnPage() {
+  api
+    .getUserInfo()
+    .then((res) => {
+      document.querySelector(profileNameSelector).textContent = res.name;
+      document.querySelector(profileAboutSelector).textContent = res.about;
+      document.querySelector(profileAvatarSelector).src = res.avatar;
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {});
+}
+setUserInfoFromServerOnPage();
+
+// сохранение текущих данных профиля
+const userInfo = new UserInfo(profileNameSelector, profileAboutSelector, () => {
+  return api
+    .getUserInfo()
+    .then((res) => {
+      return res._id;
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {});
 });

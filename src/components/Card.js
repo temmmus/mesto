@@ -35,17 +35,13 @@ export default class Card {
   // добавление слушателей
   _setEventListeners() {
     // лайк карточки
-    // this._cardLikeButton.addEventListener("click", (event) => {
-    //   event.target
-    //     .closest(".place__like-button")
-    //     .classList.toggle("place__like-button_active");
-    // });
     this._cardLikeButton.addEventListener("click", () => {
-      this._cardLikeButton.classList.contains("place__like-button_active")
-        ? (this._handleDeleteLike(this._id),
-          this._cardLikeButton.classList.remove("place__like-button_active"))
-        : (this._handleAddLike(this._id),
-          this._cardLikeButton.classList.add("place__like-button_active"));
+      // (нужно удалить по коменту ревьюера)
+      // this._cardLikeButton.classList.contains("place__like-button_active")
+      //   ? (this._handleDeleteLike(this._id),
+      //     this._cardLikeButton.classList.remove("place__like-button_active"))
+      //   : (this._handleAddLike(this._id),
+      //     this._cardLikeButton.classList.add("place__like-button_active"));
     });
 
     // открытие попапа удаления карточки
@@ -57,16 +53,12 @@ export default class Card {
     this._cardImage.addEventListener("click", () => {
       this._handleCardClick(this._name, this._link);
     });
-
-    // удаление карточки
-    this._cardRemoveButton.addEventListener("click", (event) => {
-      event.target.closest(".place").remove();
-    });
   }
 
   // создание карточки
   generateCard() {
     this._element = this._getTemplate(); // записываем разметку в приватное поле _element
+    this._element.setAttribute("id", this._id);
     this._cardImage = this._element.querySelector(".place__image");
     this._cardName = this._element.querySelector(".place__title");
     this._cardLikeButton = this._element.querySelector(".place__like-button");
@@ -88,5 +80,9 @@ export default class Card {
 
     // возвращаем элемент
     return this._element;
+  }
+
+  likeCountUpdate(count) {
+    this.likeCount = count;
   }
 }
