@@ -145,91 +145,96 @@ Promise.all([api.getUserInfo(), api.getCards()]).then(([userData, cards]) => {
     document.querySelector(pageSelectors.popupDeleteCardIdInput).value = cardId;
     popupDeleteCard.open();
   }
+
+  //  создание попапа превью карточки
+  const popupCardImagePreview = new PopupWithImage(
+    pageSelectors.popupCardPreview
+  );
+
   popupCardImagePreview.setEventListeners(); // добавление слушателей попапу превью карточек
   popupDeleteCard.setEventListeners(); // добавление слушателей попапу удаления карточек
-});
 
-//  создание попапа превью карточки
-const popupCardImagePreview = new PopupWithImage(
-  pageSelectors.popupCardPreview
-);
+  // открытие попапа-превью карточки
+  function openPreview(name, link) {
+    popupCardImagePreview.open(name, link);
+  }
 
-// открытие попапа-превью карточки
-function openPreview(name, link) {
-  popupCardImagePreview.open(name, link);
-}
+  // Включение валидации всех форм
+  const formValidators = {};
+  function enableValidation(config) {
+    const formList = Array.from(document.querySelectorAll(config.formSelector));
+    formList.forEach((formElement) => {
+      const validator = new FormValidator(formElement, config);
+      const formName = formElement.getAttribute("name");
 
-// Включение валидации всех форм
-const formValidators = {};
-function enableValidation(config) {
-  const formList = Array.from(document.querySelectorAll(config.formSelector));
-  formList.forEach((formElement) => {
-    const validator = new FormValidator(formElement, config);
-    const formName = formElement.getAttribute("name");
+      formValidators[formName] = validator;
+      validator.enableValidation();
+    });
+  }
+  enableValidation(formConfig);
 
-    formValidators[formName] = validator;
-    validator.enableValidation();
+  // добавление слушателя кнопке открытия попапа создания карточек
+  pageElements.ADD_CARD_BUTTON.addEventListener("click", () => {
+    popupAddCard.open();
+    formValidators[
+      popupAddCard.popupForm.getAttribute("name")
+    ].resetValidation(); // сбросить валидацию
   });
-}
-enableValidation(formConfig);
 
-// добавление слушателя кнопке открытия попапа создания карточек
-pageElements.ADD_CARD_BUTTON.addEventListener("click", () => {
-  popupAddCard.open();
-  formValidators[popupAddCard.popupForm.getAttribute("name")].resetValidation(); // сбросить валидацию
-});
+  // создание попапа изменения профиля
+  const popupEditProfile = new PopupWithForm(
+    pageSelectors.popupEditProfile,
+    formConfig,
+    (data) => {
+      api
+        .patchUserInfo(data.name, data.about)
+        .then(() => {
+          userInfo.setUserInfo(data); // сохранение новых данных
+          popupEditProfile.close();
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          userInfo.setUserInfoOnPage(pageSelectors); // отрисовка новых данных на сервере
+        });
+    }
+  );
+  popupEditProfile.setEventListeners(); // добавление слушателей попапу изменения профиля
 
-// создание попапа изменения профиля
-const popupEditProfile = new PopupWithForm(
-  pageSelectors.popupEditProfile,
-  formConfig,
-  (data) => {
-    api
-      .patchUserInfo(data.name, data.about)
-      .then(() => {
-        userInfo.setUserInfo(data); // сохранение новых данных
-        popupEditProfile.close();
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        userInfo.setUserInfoOnPage(pageSelectors); // отрисовка новых данных на сервере
-      });
-  }
-);
-popupEditProfile.setEventListeners(); // добавление слушателей попапу изменения профиля
+  // создание попапа изменения аватара
+  const popupEditAvatar = new PopupWithForm(
+    pageSelectors.popupEditAvatar,
+    formConfig,
+    (data) => {
+      api
+        .patchUserAvatar(data.link)
+        .then((res) => {
+          userInfo.setUserInfo(res); // сохранение новых данных
+          popupEditAvatar.close();
+        })
+        .catch((err) => {})
+        .finally(() => {
+          userInfo.setUserAvatarOnPage(pageSelectors); // отрисовка нового аватара на странице
+        });
+    }
+  );
+  popupEditAvatar.setEventListeners(); // добавление слушателей попапу изменения аватара
 
-// создание попапа изменения аватара
-const popupEditAvatar = new PopupWithForm(
-  pageSelectors.popupEditAvatar,
-  formConfig,
-  (data) => {
-    api
-      .patchUserAvatar(data.link)
-      .then((res) => {
-        userInfo.setUserInfo(res); // сохранение новых данных
-        popupEditAvatar.close();
-      })
-      .catch((err) => {})
-      .finally(() => {
-        userInfo.setUserAvatarOnPage(pageSelectors); // отрисовка нового аватара на странице
-      });
-  }
-);
-popupEditAvatar.setEventListeners(); // добавление слушателей попапу изменения аватара
+  // добавление слушателей элементу аватара
+  pageElements.EDIT_AVATAR_BUTTON.addEventListener("click", () => {
+    popupEditAvatar.open();
+    formValidators[
+      popupEditAvatar.popupForm.getAttribute("name")
+    ].resetValidation(); // сбросить валидацию
+  });
 
-// добавление слушателей элементу аватара
-pageElements.EDIT_AVATAR_BUTTON.addEventListener("click", () => {
-  popupEditAvatar.open();
-  formValidators[
-    popupEditAvatar.popupForm.getAttribute("name")
-  ].resetValidation(); // сбросить валидацию
-});
-
-// добавление слушателя кнопки открытия попапа профиля
-pageElements.EDIT_PROFILE_BUTTON.addEventListener("click", () => {
-  userInfo.setUserInfoInForm(pageSelectors); // заполнение полей формы
-  popupEditProfile.open(); // открытие формы
-  formValidators[popupAddCard.popupForm.getAttribute("name")].resetValidation(); // сбросить валидацию
+  // добавление слушателя кнопки открытия попапа профиля
+  pageElements.EDIT_PROFILE_BUTTON.addEventListener("click", () => {
+    userInfo.setUserInfoInForm(pageSelectors); // заполнение полей формы
+    popupEditProfile.open(); // открытие формы
+    formValidators[
+      popupAddCard.popupForm.getAttribute("name")
+    ].resetValidation(); // сбросить валидацию
+  });
 });
