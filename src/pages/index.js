@@ -110,12 +110,10 @@ Promise.all([api.getUserInfo(), api.getCards()]).then(([userData, cards]) => {
         .deleteCard(data.cardId) // удалить карточку на сервере
         .then(() => {
           cardList.removeItem(data); // удалить карточку на странице
+          popupDeleteCard.close();
         })
         .catch((err) => {
           console.log(err);
-        })
-        .finally(() => {
-          popupDeleteCard.close();
         });
     }
   );
@@ -129,12 +127,10 @@ Promise.all([api.getUserInfo(), api.getCards()]).then(([userData, cards]) => {
         .postNewCard(item.name, item.link)
         .then((res) => {
           cardList.addItemPrepend(createCard(res)); // добавить новую карточку на странице
+          popupAddCard.close();
         })
         .catch((err) => {
           console.log(err);
-        })
-        .finally(() => {
-          popupAddCard.close();
         });
     }
   );
@@ -212,11 +208,9 @@ Promise.all([api.getUserInfo(), api.getCards()]).then(([userData, cards]) => {
         .then((res) => {
           userInfo.setUserInfo(res); // сохранение новых данных
           popupEditAvatar.close();
-        })
-        .catch((err) => {})
-        .finally(() => {
           userInfo.setUserAvatarOnPage(pageSelectors); // отрисовка нового аватара на странице
-        });
+        })
+        .catch((err) => {});
     }
   );
   popupEditAvatar.setEventListeners(); // добавление слушателей попапу изменения аватара
